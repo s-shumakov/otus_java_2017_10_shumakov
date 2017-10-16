@@ -27,7 +27,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <com.google.guava.version>23.0</com.google.guava.version>
         <my.var>${java.version}</my.var>
-        <my.var2>java</my.var2>
     </properties>
 
     <dependencies>
@@ -39,20 +38,20 @@
     </dependencies>
 
     <build>
-        <finalName>${project.name}-${my.var2}-${my.var}</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <!--configuration>
+                <configuration>
                     <archive>
                         <manifest>
                             <mainClass>ru.otus.hw011.Main</mainClass>
                         </manifest>
                     </archive>
-                </configuration-->
+                </configuration>
             </plugin>
-            <!--plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
@@ -75,7 +74,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin-->
+            </plugin>
         </plugins>
     </build>
 

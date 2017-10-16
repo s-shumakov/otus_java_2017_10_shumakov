@@ -10,13 +10,12 @@ import java.util.*;
  *
  * To start the application:
  * mvn package
- * java -cp ./target/HW_01.1-maven-java-1.8.0_144.jar ru.otus.hw011.Main
- * java -jar ./target/L01.1.1-maven.jar //java.lang.NoClassDefFoundError: com/google/common/collect/Lists
- * java -cp ./target/L01.1.1-maven.jar;C:\Users\vitaly.chibrikov\.m2\repository\com\google\guava\guava\23.0\guava-23.0.jar ru.otus.l0111.Main
- *
+ * java -jar ./target/HW_01.1-maven.jar //no main manifest attribute, in ./target/HW_01.1-maven.jar
+ * java -cp ./target/HW_01.1-maven.jar ru.otus.hw011.Main //java.lang.NoClassDefFoundError: com/google/common/collect/Lists
+ * java -cp ./target/HW_01.1-maven.jar;C:\Users\vitaly.chibrikov\.m2\repository\com\google\guava\guava\23.0\guava-23.0.jar ru.otus.l0111.Main
  * To unzip the jar:
- * 7z x -oJAR ./target/L01.1.1-maven.jar
- * unzip -d JAR ./target/L01.1.1-maven.jar
+ * 7z x -oJAR ./target/HW_01.1-maven.jar
+ * unzip -d JAR ./target/HW_01.1-maven.jar
  *
  * To build:
  * mvn package
