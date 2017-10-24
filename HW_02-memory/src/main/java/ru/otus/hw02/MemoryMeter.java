@@ -1,46 +1,56 @@
 package ru.otus.hw02;
 
 public class MemoryMeter {
-    public static final int ARRAY_SIZE = 1_000_000;
+    private final int size;
 
-    public void test (Object obj, int arraySize) throws InterruptedException {
-        System.out.println("Starting the loop");
-        while (true) {
-            Object[] array = new Object[arraySize];
-            System.out.println("New array of size: " + array.length + " created");
-            for (int i = 0; i < arraySize; i++) {
-//                array[i] = new Object();
-//                array[i] = new String(""); //String pool
-//                array[i] = new String(new char[0]); //without String pool
-//                array[i] = new MyClass();
+    public MemoryMeter() {
+        this.size = 20_000_000;
+    }
+
+    public MemoryMeter(int size) {
+        this.size = size;
+    }
+
+    public void getObjectSize(String name) throws InterruptedException {
+        if (name == null || name.isEmpty()){
+            name = "EmptyArray";
+        }
+        System.out.println("Calculation " + name + " size");
+        Runtime runtime = Runtime.getRuntime();
+        System.gc();
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Memory before: " + memoryBefore);
+        initializeArray(name);
+        System.out.println("Created " + this.size + " objects");
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Memory after: " + memoryAfter);
+        System.out.println(name + " size: " + (memoryAfter - memoryBefore) / this.size);
+    }
+
+    public void initializeArray(String name) {
+        Object[] array = new Object[this.size];
+        if (name.equals("EmptyObject")){
+            for (int i = 0; i < this.size; i++) {
+                array[i] = new Object();
             }
-            System.out.println("Created " + arraySize + " objects.");
-            Thread.sleep(1000);
+        }else if (name.equals("EmptyString(pool)")){
+            for (int i = 0; i < this.size; i++) {
+                array[i] = new String("");
+            }
+        }else if (name.equals("EmptyString(char)")){
+            for (int i = 0; i < this.size; i++) {
+                array[i] = new String(new char[0]);
+            }
+        }else if (name.equals("MyClass")){
+            for (int i = 0; i < this.size; i++) {
+                array[i] = new MyClass();
+            }
         }
     }
-    public void getEmptyObjectSize() throws InterruptedException {
-        System.out.println("Starting getEmptyObjectSize");
-        Runtime runtime = Runtime.getRuntime();
-        long memPre, memPost;
-//        while (true) {
-            System.out.println("Starting loop...");
-            System.gc();
-            memPre = runtime.totalMemory() - runtime.freeMemory();
-            System.out.println("Memory pre: " + memPre);
 
-            Object[] array = new Object[MemoryMeter.ARRAY_SIZE];
-            for (int i = 0; i < MemoryMeter.ARRAY_SIZE; i++) {
-//                array[i] = new Object();
-//                array[i] = new String("");
-//                array[i] = new String(new char[0]);
-                array[i] = 3434535;
-            }
-            System.out.println("Created " + MemoryMeter.ARRAY_SIZE + " objects.");
-            Thread.sleep(1000);
-
-            memPost = runtime.totalMemory() - runtime.freeMemory();
-            System.out.println("Memory post: " + memPost);
-            System.out.println("Object size: " + (memPost) / MemoryMeter.ARRAY_SIZE);
-//        }
+    class MyClass {
+        private int i = 0;
+        private long l = 1;
+        private boolean b = true;
     }
 }
