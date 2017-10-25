@@ -7,10 +7,10 @@ public class Main {
     public static void main(String... args) throws InterruptedException {
         System.out.println("pid: " + ManagementFactory.getRuntimeMXBean().getName());
         MemoryMeter mm = new MemoryMeter();
-        mm.getObjectSize("");
-        mm.getObjectSize("EmptyObject");
-        mm.getObjectSize("EmptyString(pool)");
-        mm.getObjectSize("EmptyString(char)");
-        mm.getObjectSize("MyClass");
+        mm.getObjectSize("EmptyArray", null);
+        mm.getObjectSize("EmptyObject", Object::new);
+        mm.getObjectSize("EmptyString(pool)", String::new);
+        mm.getObjectSize("EmptyString(char)", () -> new String(new char[0]));
+        mm.getObjectSize("MyClass", MyClass::new);
     }
 }
