@@ -6,15 +6,15 @@ public class MyArrayList<T> implements List<T> {
     private Object[] elementData;
     private int size;
     private static final Object[] EMPTY_ELEMENTDATA = {};
-    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
 
     public MyArrayList() {
-        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+        this.elementData = EMPTY_ELEMENTDATA;
     }
 
     public MyArrayList(Collection<? extends T> c) {
         elementData = c.toArray();
-        if ((size = elementData.length) != 0) {
+        size = elementData.length;
+        if (size != 0) {
             if (elementData.getClass() != Object[].class)
                 elementData = Arrays.copyOf(elementData, size, Object[].class);
         } else {
@@ -22,14 +22,45 @@ public class MyArrayList<T> implements List<T> {
         }
     }
 
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
+    public ListIterator<T> iterator() {
+        return new ListIterator<T>() {
             private int index = 0;
             public boolean hasNext() {
                 return index < elementData.length;
             }
             public T next() { return (T) elementData[index++]; }
+
+            @Override
+            public boolean hasPrevious() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public T previous() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int nextIndex() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int previousIndex() {
+                throw new UnsupportedOperationException();
+            }
+
             public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void set(T t) {
+
+            }
+
+            @Override
+            public void add(T t) {
                 throw new UnsupportedOperationException();
             }
         };
@@ -37,14 +68,36 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean add(T e) {
-//        ensureCapacityInternal(size + 1);  // Increments modCount!!
-        elementData[size++] = e;
+        elementData = Arrays.copyOf(elementData, ++size);
+        elementData[size-1] = e;
         return true;
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
+    }
+
+    @Override
+    public T get(int index) {
+        return (T) elementData[index];
+    }
+
+    @Override
+    public T set(int index, T element) {
+        T oldValue = (T) elementData[index];
+        elementData[index] = element;
+        return oldValue;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return elementData;
+    }
+
+    @Override
+    public ListIterator<T> listIterator() {
+        return iterator();
     }
 
     @Override
@@ -54,11 +107,6 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Object[] toArray() {
         throw new UnsupportedOperationException();
     }
 
@@ -103,19 +151,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     @Override
-    public T get(int index) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public T set(int index, T element) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void add(int index, T element) {
-        throw new UnsupportedOperationException();
-    }
+    public void add(int index, T element) { throw new UnsupportedOperationException(); }
 
     @Override
     public T remove(int index) {
@@ -129,11 +165,6 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ListIterator<T> listIterator() {
         throw new UnsupportedOperationException();
     }
 
