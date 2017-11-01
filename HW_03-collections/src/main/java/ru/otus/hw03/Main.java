@@ -1,6 +1,5 @@
 package ru.otus.hw03;
 
-import ru.otus.hw03.ru.otus.hw03.MyArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
