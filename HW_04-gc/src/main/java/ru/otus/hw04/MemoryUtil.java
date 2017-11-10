@@ -14,6 +14,7 @@ public class MemoryUtil {
     private static HashMap<String, Integer> gcCount = new HashMap<>();
     private static HashMap<String, Long> gcDuration = new HashMap<>();
     private static HashMap<String, GcStat> gcStats = new HashMap<>();
+    static long summDuration = 0;
 
     private static class GcStat {
         private Integer count = 0;
@@ -29,6 +30,7 @@ public class MemoryUtil {
         @Override
         public void handleNotification(Notification notification, Object handback) {
             if (notification.getType().equals(GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION)) {
+                long duration = 0;
                 GarbageCollectionNotificationInfo notifInfo = GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
 
                 GcInfo gcInfo = notifInfo.getGcInfo();
@@ -39,7 +41,9 @@ public class MemoryUtil {
 
                 for (String key : gcStats.keySet()){
                     System.out.printf("GC: %-30s \t Count: %-5d \t Duration (ms): %d\n", key, gcStats.get(key).count, gcStats.get(key).duration);
+                    duration += gcStats.get(key).duration;
                 }
+                summDuration = duration;
             }
         }
     };
