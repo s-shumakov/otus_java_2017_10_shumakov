@@ -1,0 +1,442 @@
+Starting pid: 9480@panterra
+GC bean: PS Scavenge
+GC bean: PS MarkSweep
+Starting the loop
+List size: 50000
+Work time (ms): 24
+List size: 100000
+Work time (ms): 1040
+List size: 150000
+Work time (ms): 2067
+List size: 200000
+Work time (ms): 3071
+List size: 250000
+Work time (ms): 4082
+List size: 300000
+Work time (ms): 5087
+List size: 350000
+Work time (ms): 6099
+List size: 400000
+Work time (ms): 7133
+List size: 450000
+Work time (ms): 8136
+List size: 500000
+Work time (ms): 9141
+List size: 550000
+Work time (ms): 10144
+List size: 600000
+Work time (ms): 11147
+List size: 650000
+Work time (ms): 12155
+List size: 700000
+Work time (ms): 13165
+List size: 750000
+Work time (ms): 14176
+List size: 800000
+Work time (ms): 15192
+List size: 850000
+Work time (ms): 16195
+List size: 900000
+Work time (ms): 17205
+List size: 950000
+Work time (ms): 18216
+List size: 1000000
+Work time (ms): 19226
+List size: 1050000
+Work time (ms): 20230
+List size: 1100000
+Work time (ms): 21243
+List size: 1150000
+Work time (ms): 22254
+List size: 1200000
+Work time (ms): 23403
+GC PS Scavenge, Action: end of minor GC, Duration: 144
+GC: PS MarkSweep                   	 Count: 0     	 Duration (ms): 0
+GC: PS Scavenge                    	 Count: 1     	 Duration (ms): 144
+List size: 1250000
+Work time (ms): 24406
+List size: 1300000
+Work time (ms): 25413
+List size: 1350000
+Work time (ms): 26420
+List size: 1400000
+Work time (ms): 27428
+List size: 1450000
+Work time (ms): 28433
+List size: 1500000
+Work time (ms): 29450
+List size: 1550000
+Work time (ms): 30452
+List size: 1600000
+Work time (ms): 31463
+List size: 1650000
+Work time (ms): 32472
+List size: 1700000
+Work time (ms): 33479
+List size: 1750000
+Work time (ms): 34489
+List size: 1800000
+Work time (ms): 35507
+List size: 1850000
+Work time (ms): 36513
+List size: 1900000
+Work time (ms): 37521
+List size: 1950000
+Work time (ms): 38531
+List size: 2000000
+Work time (ms): 39539
+List size: 2050000
+Work time (ms): 40541
+List size: 2100000
+Work time (ms): 41549
+List size: 2150000
+Work time (ms): 42552
+List size: 2200000
+Work time (ms): 43558
+List size: 2250000
+Work time (ms): 44568
+List size: 2300000
+Work time (ms): 45576
+List size: 2350000
+Work time (ms): 46585
+List size: 2400000
+Work time (ms): 47596
+List size: 2450000
+Work time (ms): 48604
+List size: 2500000
+Work time (ms): 49614
+GC PS Scavenge, Action: end of minor GC, Duration: 212
+GC: PS MarkSweep                   	 Count: 0     	 Duration (ms): 0
+GC: PS Scavenge                    	 Count: 2     	 Duration (ms): 356
+List size: 2550000
+Work time (ms): 50832
+List size: 2600000
+Work time (ms): 51841
+List size: 2650000
+Work time (ms): 52852
+List size: 2700000
+Work time (ms): 53860
+List size: 2750000
+Work time (ms): 54884
+List size: 2800000
+Work time (ms): 55921
+List size: 2850000
+Work time (ms): 56924
+List size: 2900000
+Work time (ms): 57929
+List size: 2950000
+Work time (ms): 58933
+List size: 3000000
+Work time (ms): 59936
+List size: 3050000
+Work time (ms): 60940
+List size: 3100000
+Work time (ms): 61952
+List size: 3150000
+Work time (ms): 62956
+List size: 3200000
+Work time (ms): 63966
+List size: 3250000
+Work time (ms): 64976
+List size: 3300000
+Work time (ms): 65980
+List size: 3350000
+Work time (ms): 66990
+List size: 3400000
+Work time (ms): 68001
+List size: 3450000
+Work time (ms): 69011
+List size: 3500000
+Work time (ms): 70021
+List size: 3550000
+Work time (ms): 71031
+List size: 3600000
+Work time (ms): 72042
+List size: 3650000
+Work time (ms): 73053
+List size: 3700000
+Work time (ms): 74064
+List size: 3750000
+Work time (ms): 75075
+List size: 3800000
+Work time (ms): 76087
+List size: 3850000
+Work time (ms): 77091
+GC PS Scavenge, Action: end of minor GC, Duration: 252
+GC: PS MarkSweep                   	 Count: 0     	 Duration (ms): 0
+GC: PS Scavenge                    	 Count: 3     	 Duration (ms): 608
+List size: 3900000
+Work time (ms): 80622
+GC PS MarkSweep, Action: end of major GC, Duration: 2265
+GC: PS MarkSweep                   	 Count: 1     	 Duration (ms): 2265
+GC: PS Scavenge                    	 Count: 3     	 Duration (ms): 608
+List size: 3950000
+Work time (ms): 81634
+List size: 4000000
+Work time (ms): 82645
+List size: 4050000
+Work time (ms): 83657
+List size: 4100000
+Work time (ms): 84687
+List size: 4150000
+Work time (ms): 85692
+List size: 4200000
+Work time (ms): 86698
+List size: 4250000
+Work time (ms): 87703
+List size: 4300000
+Work time (ms): 88707
+List size: 4350000
+Work time (ms): 89713
+List size: 4400000
+Work time (ms): 90719
+List size: 4450000
+Work time (ms): 91723
+List size: 4500000
+Work time (ms): 92728
+List size: 4550000
+Work time (ms): 93738
+List size: 4600000
+Work time (ms): 94750
+List size: 4650000
+Work time (ms): 95763
+List size: 4700000
+Work time (ms): 96767
+List size: 4750000
+Work time (ms): 97774
+List size: 4800000
+Work time (ms): 98791
+List size: 4850000
+Work time (ms): 99803
+List size: 4900000
+Work time (ms): 100807
+List size: 4950000
+Work time (ms): 101822
+List size: 5000000
+Work time (ms): 102835
+List size: 5050000
+Work time (ms): 103842
+List size: 5100000
+Work time (ms): 104855
+List size: 5150000
+Work time (ms): 105869
+List size: 5200000
+Work time (ms): 106882
+GC PS Scavenge, Action: end of minor GC, Duration: 219
+GC: PS MarkSweep                   	 Count: 1     	 Duration (ms): 2265
+GC: PS Scavenge                    	 Count: 4     	 Duration (ms): 827
+List size: 5250000
+Work time (ms): 109595
+GC PS MarkSweep, Action: end of major GC, Duration: 2436
+GC: PS MarkSweep                   	 Count: 2     	 Duration (ms): 4701
+GC: PS Scavenge                    	 Count: 4     	 Duration (ms): 827
+List size: 5300000
+Work time (ms): 110621
+List size: 5350000
+Work time (ms): 111635
+List size: 5400000
+Work time (ms): 112644
+List size: 5450000
+Work time (ms): 113656
+List size: 5500000
+Work time (ms): 114668
+List size: 5550000
+Work time (ms): 115683
+List size: 5600000
+Work time (ms): 116697
+List size: 5650000
+Work time (ms): 117709
+List size: 5700000
+Work time (ms): 118722
+List size: 5750000
+Work time (ms): 119729
+List size: 5800000
+Work time (ms): 120742
+List size: 5850000
+Work time (ms): 121747
+List size: 5900000
+Work time (ms): 122760
+List size: 5950000
+Work time (ms): 123774
+List size: 6000000
+Work time (ms): 124787
+List size: 6050000
+Work time (ms): 125801
+List size: 6100000
+Work time (ms): 126815
+List size: 6150000
+Work time (ms): 127849
+List size: 6200000
+Work time (ms): 128858
+List size: 6250000
+Work time (ms): 129865
+List size: 6300000
+Work time (ms): 130881
+List size: 6350000
+Work time (ms): 131889
+GC PS MarkSweep, Action: end of major GC, Duration: 1936
+GC: PS MarkSweep                   	 Count: 3     	 Duration (ms): 6637
+GC: PS Scavenge                    	 Count: 4     	 Duration (ms): 827
+List size: 6400000
+Work time (ms): 134832
+List size: 6450000
+Work time (ms): 135854
+List size: 6500000
+Work time (ms): 136859
+List size: 6550000
+Work time (ms): 137865
+List size: 6600000
+Work time (ms): 138870
+List size: 6650000
+Work time (ms): 139876
+List size: 6700000
+Work time (ms): 140893
+List size: 6750000
+Work time (ms): 141899
+List size: 6800000
+Work time (ms): 142905
+List size: 6850000
+Work time (ms): 143922
+List size: 6900000
+Work time (ms): 144928
+List size: 6950000
+Work time (ms): 145937
+List size: 7000000
+Work time (ms): 146948
+List size: 7050000
+Work time (ms): 147955
+List size: 7100000
+Work time (ms): 148962
+List size: 7150000
+Work time (ms): 149969
+List size: 7200000
+Work time (ms): 150977
+List size: 7250000
+Work time (ms): 151987
+List size: 7300000
+Work time (ms): 152996
+List size: 7350000
+Work time (ms): 154003
+List size: 7400000
+Work time (ms): 155012
+List size: 7450000
+Work time (ms): 156020
+List size: 7500000
+Work time (ms): 157032
+List size: 7550000
+Work time (ms): 158069
+List size: 7600000
+Work time (ms): 159082
+List size: 7650000
+Work time (ms): 160089
+List size: 7700000
+Work time (ms): 161096
+List size: 7750000
+Work time (ms): 162104
+List size: 7800000
+Work time (ms): 163115
+List size: 7850000
+Work time (ms): 164122
+List size: 7900000
+Work time (ms): 165143
+List size: 7950000
+Work time (ms): 166154
+GC PS MarkSweep, Action: end of major GC, Duration: 3974
+GC: PS MarkSweep                   	 Count: 4     	 Duration (ms): 10611
+GC: PS Scavenge                    	 Count: 4     	 Duration (ms): 827
+List size: 8000000
+Work time (ms): 171144
+List size: 8050000
+Work time (ms): 172156
+List size: 8100000
+Work time (ms): 173164
+List size: 8150000
+Work time (ms): 174172
+List size: 8200000
+Work time (ms): 175180
+List size: 8250000
+Work time (ms): 176187
+List size: 8300000
+Work time (ms): 177196
+List size: 8350000
+Work time (ms): 178216
+List size: 8400000
+Work time (ms): 179224
+List size: 8450000
+Work time (ms): 180242
+List size: 8500000
+Work time (ms): 181259
+List size: 8550000
+Work time (ms): 182268
+List size: 8600000
+Work time (ms): 183286
+List size: 8650000
+Work time (ms): 184293
+List size: 8700000
+Work time (ms): 185302
+List size: 8750000
+Work time (ms): 186320
+List size: 8800000
+Work time (ms): 187329
+List size: 8850000
+Work time (ms): 188344
+List size: 8900000
+Work time (ms): 189368
+List size: 8950000
+Work time (ms): 190380
+List size: 9000000
+Work time (ms): 191389
+List size: 9050000
+Work time (ms): 192397
+List size: 9100000
+Work time (ms): 193410
+List size: 9150000
+Work time (ms): 194419
+GC PS MarkSweep, Action: end of major GC, Duration: 2719
+GC: PS MarkSweep                   	 Count: 5     	 Duration (ms): 13330
+GC: PS Scavenge                    	 Count: 4     	 Duration (ms): 827
+List size: 9200000
+Work time (ms): 198160
+List size: 9250000
+Work time (ms): 199171
+List size: 9300000
+Work time (ms): 200179
+List size: 9350000
+Work time (ms): 201186
+List size: 9400000
+Work time (ms): 202205
+List size: 9450000
+Work time (ms): 203226
+List size: 9500000
+Work time (ms): 204241
+GC PS MarkSweep, Action: end of major GC, Duration: 2704
+GC: PS MarkSweep                   	 Count: 6     	 Duration (ms): 16034
+GC: PS Scavenge                    	 Count: 4     	 Duration (ms): 827
+List size: 9550000
+Work time (ms): 207960
+List size: 9600000
+Work time (ms): 208968
+List size: 9650000
+Work time (ms): 209979
+List size: 9700000
+Work time (ms): 210991
+List size: 9750000
+Work time (ms): 212005
+List size: 9800000
+Work time (ms): 213022
+List size: 9850000
+Work time (ms): 214043
+List size: 9900000
+Work time (ms): 215066
+List size: 9950000
+Work time (ms): 216074
+List size: 10000000
+Work time (ms): 217084
+List size: 10050000
+Work time (ms): 218095
+List size: 10100000
+Work time (ms): 219115
+List size: 10150000
+Work time (ms): 220125
+GC PS MarkSweep, Action: end of major GC, Duration: 2846
+GC: PS MarkSweep                  
