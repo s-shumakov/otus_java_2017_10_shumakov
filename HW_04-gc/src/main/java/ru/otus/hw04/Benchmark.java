@@ -10,14 +10,20 @@ class Benchmark {
         long startTime = System.currentTimeMillis();
         System.out.println("Starting the loop");
         ArrayList<String> list = new ArrayList();
+        int loopCount = 0;
+        long workTime = 0;
         while (true) {
             int local = size;
             for (int i = 0; i < local; i++) {
                 list.add(new String(new char[0]));
             }
             list.subList(0, local/2).clear();
-            System.out.println("List size: " + list.size());
-            System.out.println("Work time (ms): " + (System.currentTimeMillis() - startTime));
+            workTime = System.currentTimeMillis() - startTime;
+            System.out.println("Work time, ms: " + workTime);
+            System.out.println("Loop count, ms: " + ++loopCount);
+            System.out.println("GC duration, ms: " + MemoryUtil.summDuration);
+            System.out.println("Efficiency, %: " + (float)MemoryUtil.summDuration/workTime*100);
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
