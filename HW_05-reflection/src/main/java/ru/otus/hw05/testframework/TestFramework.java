@@ -17,14 +17,12 @@ public class TestFramework {
         for (Method m : tests) {
             Object obj = ReflectionHelper.instantiate(clazz);
             for(Method bm : beforeTests){
-//                System.out.println("Before method: "+bm.getName());
                 ReflectionHelper.callMethod(obj, bm.getName(), bm.getParameters());
             }
             System.out.println("Test method: "+m.getName());
             ReflectionHelper.callMethod(obj, m.getName(), m.getParameters());
 
             for(Method am : afterTests){
-//                System.out.println("After method: "+am.getName());
                 ReflectionHelper.callMethod(obj, am.getName(), am.getParameters());
             }
         }

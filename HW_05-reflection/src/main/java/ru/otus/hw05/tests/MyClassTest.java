@@ -17,11 +17,6 @@ public class MyClassTest {
     }
 
     @Test
-    public void testTrue(){
-        assertTrue(1 == 2);
-    }
-
-    @Test
     public void instantiate() {
         MyClass myClass = ReflectionHelper.instantiate(MyClass.class);
         assertEquals(0, myClass.getA());
