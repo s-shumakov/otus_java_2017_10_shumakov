@@ -28,6 +28,10 @@ public class TestFramework {
         }
     }
 
+    public static Package runTests (String packageName){
+        return Package.getPackage(packageName);
+    }
+
     public static void assertEquals(Object expected, Object actual) {
         if (!expected.equals(actual)) {
             fail("Expected: " + expected, "Actual: " + actual);
