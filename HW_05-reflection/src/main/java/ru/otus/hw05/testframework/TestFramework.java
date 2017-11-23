@@ -3,6 +3,8 @@ package ru.otus.hw05.testframework;
 import ru.otus.hw05.annotations.After;
 import ru.otus.hw05.annotations.Before;
 import ru.otus.hw05.annotations.Test;
+
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -28,8 +30,18 @@ public class TestFramework {
         }
     }
 
-    public static Package runTests (String packageName){
-        return Package.getPackage(packageName);
+    public static void runTests (String packageName){
+        try {
+            for (Class clazz : ReflectionHelper.getClasses(packageName)){
+                if (!ReflectionHelper.getAnnotatedMethods(clazz, Test.class).isEmpty()) {
+                    runTests(clazz);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void assertEquals(Object expected, Object actual) {
