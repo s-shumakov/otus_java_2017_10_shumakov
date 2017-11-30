@@ -8,10 +8,6 @@ public class Money {
     private int denomination;
     private int amount;
 
-    public Money(int denomination) {
-        this.denomination = denomination;
-    }
-
     public Money(int denomination, int amount) {
         this.denomination = denomination;
         this.amount = amount;

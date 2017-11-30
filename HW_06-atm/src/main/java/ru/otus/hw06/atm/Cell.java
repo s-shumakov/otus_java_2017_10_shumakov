@@ -10,7 +10,7 @@ public class Cell {
         this.amount = 0;
     }
 
-    public int getAmount(){
+    public int getAmount() {
         return this.amount;
     }
 
@@ -18,22 +18,22 @@ public class Cell {
         return denomination;
     }
 
-    public void putMoney(int amount) throws ATMException{
-        if (this.amount + amount > Cell.MAX_AMOUNT){
+    public void putMoney(int amount) throws ATMException {
+        if (this.amount + amount > Cell.MAX_AMOUNT) {
             throw new ATMException("Amount of money exceeded");
         }
         this.amount += amount;
     }
 
-    public int takeMoney(int amount) throws ATMException{
-        if (this.amount - amount < 0){
+    public int takeMoney(int amount) throws ATMException {
+        if (this.amount - amount < 0) {
             throw new ATMException("Insufficient money");
         }
         this.amount -= amount;
         return amount;
     }
 
-    public long getSumm() {
+    public int getSumm() {
         return this.amount * this.denomination;
     }
 
