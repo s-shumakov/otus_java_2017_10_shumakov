@@ -24,7 +24,8 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -37,7 +38,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.hw06.Main</mainClass>
+                            <mainClass>ru.otus.hw06.atm.ATM</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
