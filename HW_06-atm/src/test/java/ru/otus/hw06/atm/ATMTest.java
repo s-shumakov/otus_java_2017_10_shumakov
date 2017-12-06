@@ -70,4 +70,14 @@ public class ATMTest {
         assertEquals(600, atm.getBalance());
     }
 
+    @Test
+    public void addAmount() throws ATMException {
+        ATM atm = new ATM();
+        atm.deposit(new Money(Denomination.RUB100, 1));
+        atm.deposit(new Money(Denomination.RUB500, 1));
+        System.out.println("Balance: " + atm.getBalance());
+        atm.addAmount(Denomination.RUB1000, 1);
+        System.out.println("Balance: " + atm.getBalance());
+        assertEquals(1600, atm.getBalance());
+    }
 }

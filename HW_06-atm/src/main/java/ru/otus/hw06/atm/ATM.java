@@ -83,14 +83,8 @@ public class ATM {
         }
     }
 
-//    public void addAmount(Denomination denomination, int count) {
-//        for (Map.Entry<Denomination, Integer> entry : ) {
-//            if (entry.getKey() == denomination) {
-//                int cash = entry.getValue() + count;
-//                entry.setValue(cash);
-//                return;
-//            }
-//        }
-//        denominations.put(denomination, count);
-//    }
+    public void addAmount(Denomination denomination, int count) throws ATMException {
+        this.cells.get(denomination).putMoney(count);
+        this.setBalance();
+    }
 }
