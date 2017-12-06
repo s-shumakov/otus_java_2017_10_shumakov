@@ -3,10 +3,10 @@ package ru.otus.hw06.atm;
 import java.util.*;
 
 public class ATM {
-    private HashMap<Integer, Cell> cells = new HashMap<>();
+    private HashMap<Denomination, Cell> cells = new HashMap<>();
     private int balance;
 
-    public static Map<Integer, Integer> denominations = new HashMap<>();
+//    public static Map<Integer, Integer> denominations = new HashMap<>();
 
     public ATM() {
         this.initCells();
@@ -14,9 +14,6 @@ public class ATM {
     }
 
     public void deposit(Money money) throws ATMException {
-        if (!Money.DENOMINATIONS.contains(money.getDenomination())) {
-            throw new ATMException("Incorrect denomination");
-        }
         Cell cell = this.cells.get(money.getDenomination());
         cell.putMoney(money.getAmount());
         this.setBalance();
@@ -26,20 +23,20 @@ public class ATM {
         this.checkAvailableAmount(expectedAmount);
 
         ArrayList<Money> money = new ArrayList<>();
-        Map<Integer, Integer> map = new HashMap<>();
-        ArrayList<Integer> list = new ArrayList<>(Money.DENOMINATIONS);
+        Map<Denomination, Integer> map = new HashMap<>();
+        List<Denomination> list = Arrays.asList(Denomination.values());
         list.sort(Comparator.reverseOrder());
 
-        for (Integer denomination : list) {
-            int required = expectedAmount / denomination;
+        for (Denomination denomination : list) {
+            int required = expectedAmount / denomination.getValue();
             int cellAmount = this.cells.get(denomination).getAmount();
             if (required > 0) {
                 if (cellAmount >= required) {
                     map.put(denomination, required);
-                    expectedAmount -= denomination * required;
+                    expectedAmount -= denomination.getValue() * required;
                 } else {
                     map.put(denomination, cellAmount);
-                    expectedAmount -= cellAmount * denomination;
+                    expectedAmount -= cellAmount * denomination.getValue();
                 }
             }
             if (expectedAmount == 0) break;
@@ -47,7 +44,7 @@ public class ATM {
         if (expectedAmount > 0) {
             throw new ATMException("The requested amount can not be issued");
         }
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        for (Map.Entry<Denomination, Integer> entry : map.entrySet()) {
             this.cells.get(entry.getKey()).takeMoney(entry.getValue());
             money.add(new Money(entry.getKey(), entry.getValue()));
         }
@@ -77,7 +74,7 @@ public class ATM {
     }
 
     private void initCells() {
-        for (Integer d : Money.DENOMINATIONS) {
+        for (Denomination d : Denomination.values()) {
             this.cells.put(d, new Cell(d));
         }
     }
@@ -88,14 +85,14 @@ public class ATM {
         }
     }
 
-    public void addAmount(int denomination, int count) {
-        for (Map.Entry<Integer, Integer> entry : denominations.entrySet()) {
-            if (entry.getKey() == denomination) {
-                int cash = entry.getValue() + count;
-                entry.setValue(cash);
-                return;
-            }
-        }
-        denominations.put(denomination, count);
-    }
+//    public void addAmount(Denomination denomination, int count) {
+//        for (Map.Entry<Denomination, Integer> entry : ) {
+//            if (entry.getKey() == denomination) {
+//                int cash = entry.getValue() + count;
+//                entry.setValue(cash);
+//                return;
+//            }
+//        }
+//        denominations.put(denomination, count);
+//    }
 }

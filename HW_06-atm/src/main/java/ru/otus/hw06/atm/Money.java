@@ -1,19 +1,15 @@
 package ru.otus.hw06.atm;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Money {
-    public static final List<Integer> DENOMINATIONS = Arrays.asList(50, 100, 500, 1000, 5000);
-    private int denomination;
+    private Denomination denomination;
     private int amount;
 
-    public Money(int denomination, int amount) {
+    public Money(Denomination denomination, int amount) throws ATMException {
         this.denomination = denomination;
         this.amount = amount;
     }
 
-    public int getDenomination() {
+    public Denomination getDenomination() {
         return denomination;
     }
 
@@ -22,6 +18,6 @@ public class Money {
     }
 
     public int getSumm() {
-        return this.amount * this.denomination;
+        return this.amount * this.denomination.getValue();
     }
 }

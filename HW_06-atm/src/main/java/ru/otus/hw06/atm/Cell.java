@@ -2,10 +2,10 @@ package ru.otus.hw06.atm;
 
 public class Cell {
     public static final int MAX_AMOUNT = 2500;
-    private int denomination;
+    private Denomination denomination;
     private int amount;
 
-    public Cell(int denomination) {
+    public Cell(Denomination denomination) {
         this.denomination = denomination;
         this.amount = 0;
     }
@@ -14,7 +14,7 @@ public class Cell {
         return this.amount;
     }
 
-    public int getDenomination() {
+    public Denomination getDenomination() {
         return denomination;
     }
 
@@ -34,7 +34,7 @@ public class Cell {
     }
 
     public int getSumm() {
-        return this.amount * this.denomination;
+        return this.amount * this.denomination.getValue();
     }
 
 }
