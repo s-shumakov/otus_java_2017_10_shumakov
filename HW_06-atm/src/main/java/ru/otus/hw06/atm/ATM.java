@@ -6,8 +6,6 @@ public class ATM {
     private HashMap<Denomination, Cell> cells = new HashMap<>();
     private int balance;
 
-//    public static Map<Integer, Integer> denominations = new HashMap<>();
-
     public ATM() {
         this.initCells();
         balance = 0;
