@@ -87,4 +87,15 @@ public class ATM {
         this.cells.get(denomination).putMoney(count);
         this.setBalance();
     }
+
+    public Memento save() throws ATMException {
+        return new Memento(this.cells);
+    }
+
+    public void restore(Memento memento) {
+        for (Map.Entry<Denomination, Integer> entry : memento.getSavedCells().entrySet()) {
+            this.cells.get(entry.getKey()).setAmount(entry.getValue());
+        }
+        this.setBalance();
+    }
 }

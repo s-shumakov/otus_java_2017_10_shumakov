@@ -37,4 +37,7 @@ public class Cell {
         return this.amount * this.denomination.getValue();
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }
