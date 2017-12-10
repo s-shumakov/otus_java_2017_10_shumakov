@@ -1,22 +1,21 @@
 package ru.otus.hw07.atm;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Department {
     private List<ATM> atms = new ArrayList<>();
     private Map<ATM, Memento> history = new HashMap<>();
 
     public Department(List<ATM> atms) throws ATMException {
-        this.atms = atms;
-        for (ATM atm : atms) {
+        this.atms.addAll(atms);
+        for (ATM atm : this.atms) {
             history.put(atm, atm.save());
         }
     }
 
     public List<ATM> getAtms() {
+        List<ATM> atms = new ArrayList<>();
+        atms.addAll(this.atms);
         return atms;
     }
 

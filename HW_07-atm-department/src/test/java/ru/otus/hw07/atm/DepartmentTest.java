@@ -125,4 +125,24 @@ public class DepartmentTest {
         assertEquals(initBalance3, atm3.getBalance());
     }
 
+    @Test
+    public void addATMfix() throws ATMException {
+        List<ATM> atms = new ArrayList<>();
+        atms.add(new ATM());
+        Department dep = new Department(atms);
+        System.out.println(dep.getAtms().size());
+        assertEquals(1, dep.getAtms().size());
+
+        atms.add(new ATM()); // <--- добавление а Department нового ATM, но мимо метода addAtm()
+        System.out.println(dep.getAtms().size());
+        assertEquals(1, dep.getAtms().size());
+
+        List<ATM> atms2 = dep.getAtms();
+        atms2.add(new ATM());
+        System.out.println(dep.getAtms().size());
+        assertEquals(1, dep.getAtms().size());
+    }
+
+
+
 }
