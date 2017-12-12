@@ -39,7 +39,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.hw06.ru.otus.hw07.atm.Department</mainClass>
+                            <mainClass>ru.otus.hw07.atm.Department</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
