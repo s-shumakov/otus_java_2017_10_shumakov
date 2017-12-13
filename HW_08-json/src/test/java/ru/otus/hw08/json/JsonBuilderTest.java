@@ -14,9 +14,9 @@ import static org.junit.Assert.*;
 
 public class JsonBuilderTest {
     @Test
-    public void object2Json() throws Exception {
+    public void objectToJson() throws Exception {
         Address address = new Address ("21 2nd Street", "New York", "NY", 10021);
-        PhoneNumber[] phones = {new PhoneNumber("home", "212 555-1234"), new PhoneNumber("fax", null)};
+        PhoneNumber[] phones = {new PhoneNumber("home", "212 555-1234"), new PhoneNumber("fax", "646 555-4567")};
         List<String> col = new ArrayList<>();
         col.add("abc");
         col.add("def");
@@ -25,7 +25,7 @@ public class JsonBuilderTest {
         TestClass obj = new TestClass("John", "Smith", 25, address, phones, arrayInt, arrayString, col);
 
         JsonBuilder jsonBuilder = new JsonBuilder();
-        String myJson = jsonBuilder.object2Json(obj);
+        String myJson = jsonBuilder.objectToJson(obj);
         System.out.println("myJson: " + myJson);
 
         Gson gson = new Gson();

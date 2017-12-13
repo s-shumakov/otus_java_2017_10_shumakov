@@ -3,17 +3,23 @@ package ru.otus.hw08.json;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class JsonBuilder {
     private JSONObject jsonObject;
+    private static final ArrayList<Class> PRIMITIVES = new ArrayList<>(Arrays.asList(
+            Byte.TYPE, Short.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE, Boolean.TYPE, Character.TYPE
+    ));
 
     public JsonBuilder() {
         this.jsonObject = new JSONObject();
     }
 
-    public String object2Json(Object obj) {
+    public String objectToJson(Object obj) {
         try {
             navigateTree(obj, null);
         } catch (IllegalAccessException e) {
@@ -29,8 +35,6 @@ public class JsonBuilder {
             field.setAccessible(true);
             String type = getType(field);
             switch (type) {
-                case "Integer":
-                case "Long":
                 case "Primitive":
                 case "String":
                     System.out.println(type + " " + field.getName() + ": " + field.get(obj));
@@ -52,20 +56,14 @@ public class JsonBuilder {
                         navigateTree(element, innerArrayObj);
                     }
                     break;
-                case "ArrayOfInt":
+                case "Array":
                     jsonArray = new JSONArray();
                     jsonObject.put(field.getName(), jsonArray);
-                    for (int element : (int[]) field.get(obj)) {
-                        System.out.println(type + " " + field.getName() + ": " + element);
-                        jsonArray.add(element);
-                    }
-                    break;
-                case "ArrayOfString":
-                    jsonArray = new JSONArray();
-                    jsonObject.put(field.getName(), jsonArray);
-                    for (String element : (String[]) field.get(obj)) {
-                        System.out.println(type + " " + field.getName() + ": " + element);
-                        jsonArray.add(element);
+                    int length = Array.getLength(field.get(obj));
+                    for (int i = 0; i < length; i ++) {
+                        Object arrayElement = Array.get(field.get(obj), i);
+                        jsonArray.add(arrayElement);
+                        System.out.println(type + " " + field.getName() + ": " + arrayElement);
                     }
                     break;
                 case "Collection":
@@ -88,27 +86,20 @@ public class JsonBuilder {
 
     private String getType(Field field) {
         Class clazz = field.getType();
-        System.out.println("clazz: " +clazz.getSimpleName());
-        if (clazz.isPrimitive()) {
+        System.out.println("clazz: " + clazz.getSimpleName());
+        if (PRIMITIVES.contains(clazz)) {
             return "Primitive";
-        } else if (clazz.getSimpleName().equals("String")) {
+        } else if (clazz == String.class) {
             return "String";
-        } else if (clazz.getSimpleName().equals("Integer")) {
-            return "Integer";
-        } else if (clazz.getSimpleName().equals("Long")) {
-            return "Long";
-        } else if (clazz.getSimpleName().equals("Collection")) {
+        } else if (clazz == Collection.class) {
             return "Collection";
         } else if (clazz.isArray()) {
-            if (clazz.getSimpleName().equals("int[]")) {
-                return "ArrayOfInt";
-            } else if (clazz.getSimpleName().equals("String[]")) {
-                return "ArrayOfString";
+            if (PRIMITIVES.contains(clazz.getComponentType()) ||
+                    clazz.getComponentType() == String.class) {
+                return "Array";
             } else {
                 return "ArrayOfObjects";
             }
-        } else if (clazz.getSimpleName().equals("Collection")) {
-            return "Collection";
         } else {
             return "Object";
         }
