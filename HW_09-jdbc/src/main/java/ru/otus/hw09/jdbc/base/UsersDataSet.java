@@ -1,27 +1,35 @@
 package ru.otus.hw09.jdbc.base;
 
-public class UsersDataSet {
-    private final long id;
+public class UsersDataSet extends DataSet {
     private final String name;
+    private final int age;
 
-    public UsersDataSet(long id, String name) {
-        this.id = id;
+    public UsersDataSet(long id, String name, int age) {
+        super(id);
         this.name = name;
+        this.age = age;
     }
 
     public String getName() {
         return name;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     public long getId() {
-        return id;
+        return super.getId();
     }
 
     @Override
     public String toString() {
         return "UsersDataSet{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
+                ", age=" + age +
                 '}';
     }
+
+
 }
