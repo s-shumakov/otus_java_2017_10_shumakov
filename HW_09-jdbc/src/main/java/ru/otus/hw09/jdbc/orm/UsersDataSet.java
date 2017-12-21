@@ -1,4 +1,4 @@
-package ru.otus.hw09.jdbc.base;
+package ru.otus.hw09.jdbc.orm;
 
 public class UsersDataSet extends DataSet {
     private final String name;

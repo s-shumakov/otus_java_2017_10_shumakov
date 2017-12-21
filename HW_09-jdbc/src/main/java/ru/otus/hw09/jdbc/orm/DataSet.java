@@ -1,4 +1,4 @@
-package ru.otus.hw09.jdbc.base;
+package ru.otus.hw09.jdbc.orm;
 
 public abstract class DataSet {
     private final long id;
