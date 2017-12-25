@@ -2,7 +2,6 @@ package ru.otus.hw10.hibernate.base.dataSets;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,7 +21,7 @@ public class UserDataSet extends DataSet {
     public UserDataSet() {
     }
 
-    public UserDataSet(String name, List<PhoneDataSet> phone, AddressDataSet address) {
+    public UserDataSet(String name, Set<PhoneDataSet> phone, AddressDataSet address) {
         this.setId(-1);
         this.name = name;
         this.phone.addAll(phone);
