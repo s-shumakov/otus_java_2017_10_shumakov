@@ -47,12 +47,6 @@ public class DBServiceImpl implements DBService {
         return configuration.buildSessionFactory(serviceRegistry);
     }
 
-    public String getLocalStatus() {
-        return runInSession(session -> {
-            return session.getTransaction().getStatus().name();
-        });
-    }
-
     public void save(UserDataSet dataSet) {
         runInSession(session -> {
             UserDataSetDAO dao = new UserDataSetDAO(session);

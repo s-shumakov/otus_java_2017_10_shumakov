@@ -17,7 +17,6 @@ public class UserDataSet extends DataSet {
     @OneToOne(cascade = CascadeType.ALL)
     private AddressDataSet address;
 
-    //Important for Hibernate
     public UserDataSet() {
     }
 

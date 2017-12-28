@@ -4,7 +4,6 @@ import ru.otus.hw10.hibernate.base.DBService;
 import ru.otus.hw10.hibernate.base.dataSets.*;
 import ru.otus.hw10.hibernate.dbService.DBServiceImpl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,9 +11,6 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         DBService dbService = new DBServiceImpl();
-
-        String status = dbService.getLocalStatus();
-        System.out.println("Status: " + status);
 
         Set<PhoneDataSet> phones1 = new HashSet<>();
         Set<PhoneDataSet> phones2 = new HashSet<>();

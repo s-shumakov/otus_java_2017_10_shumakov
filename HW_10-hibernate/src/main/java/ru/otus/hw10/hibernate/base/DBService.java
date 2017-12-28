@@ -4,7 +4,6 @@ import ru.otus.hw10.hibernate.base.dataSets.UserDataSet;
 import java.util.List;
 
 public interface DBService {
-    String getLocalStatus();
 
     void save(UserDataSet dataSet);
 
