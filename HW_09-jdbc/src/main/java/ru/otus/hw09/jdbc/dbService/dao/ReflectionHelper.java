@@ -1,4 +1,4 @@
-package ru.otus.hw09.jdbc.orm;
+package ru.otus.hw09.jdbc.dbService.dao;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package ru.otus.hw09.jdbc.orm;
+package ru.otus.hw09.jdbc.dbService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
