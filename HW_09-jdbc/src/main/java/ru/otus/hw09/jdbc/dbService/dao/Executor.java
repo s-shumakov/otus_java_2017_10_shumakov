@@ -14,15 +14,24 @@ public class Executor {
     }
 
     public <T extends DataSet> void save(T user, String table) throws SQLException {
-        Map map = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap();
         Class clazz = user.getClass();
         for (Field field : clazz.getDeclaredFields()) {
-            map.put(field.getName(), "\"" + ReflectionHelper.getFieldValue(user, field.getName()).toString() + "\"");
+            map.put(field.getName(), ReflectionHelper.getFieldValue(user, field.getName()));
         }
-        String query = buildInsertQuery(table, map);
-        Statement stmt = getConnection().createStatement();
-        stmt.execute(query);
-        stmt.close();
+        String[] params = new String[map.size()];
+        Arrays.fill(params, "?");
+        String query = "insert into " + table +
+                " (" + String.join(", ", map.keySet()) + ")" +
+                " values (" + String.join(", ", params) + ")";
+        System.out.println("Query: " + query);
+        PreparedStatement pstmt = getConnection().prepareStatement(query);
+        int i = 1;
+        for (Map.Entry<String, Object> e : map.entrySet()){
+            pstmt.setObject(i++, e.getValue());
+        }
+        pstmt.executeUpdate();
+        pstmt.close();
     }
 
     public <T extends DataSet> T load(String query, Class<T> clazz) throws SQLException {
@@ -65,21 +74,6 @@ public class Executor {
         }
         return users;
     }
-
-    private String buildInsertQuery(String table, Map map) {
-        List<String> fieldNames = new ArrayList<>();
-        List<String> fieldValues = new ArrayList<>();
-        map.forEach((k, v) -> {
-            fieldNames.add(k.toString());
-            fieldValues.add("\"" + v.toString() + "\"");
-        });
-        String query = "insert into " + table +
-                " (" + String.join(", ", map.keySet()) + ")" +
-                " values (" + String.join(", ", map.values()) + ")";
-        System.out.println("Query: " + query);
-        return query;
-    }
-
 
     public void execUpdate(String update, ExecuteHandler prepare) {
         try {
