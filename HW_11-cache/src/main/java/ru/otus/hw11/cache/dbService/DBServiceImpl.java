@@ -14,13 +14,16 @@ import ru.otus.hw11.cache.cache.CacheElement;
 import ru.otus.hw11.cache.dbService.dao.UserDataSetDAO;
 
 import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class DBServiceImpl implements DBService {
     private final SessionFactory sessionFactory;
-    private CacheEngine userCacheById = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
-    private CacheEngine userCacheByName = new CacheEngineImpl<String, UserDataSet>(5, 0, 0, true);
+    private CacheEngine userCache = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
+    private Map<String, Long> indexByName = new HashMap<>();
 
     public DBServiceImpl() {
 
@@ -56,49 +59,61 @@ public class DBServiceImpl implements DBService {
             return dao.save(dataSet);
         });
 
-        userCacheById.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
-        userCacheByName.put(new SoftReference<>(new CacheElement<>(dataSet.getName(), dataSet)));
+        userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
+        indexByName.put(dataSet.getName(), dataSet.getId());
     }
 
     public UserDataSet read(long id) {
-        SoftReference<CacheElement<Long, UserDataSet>> element = userCacheById.get(id);
+        SoftReference<CacheElement<Long, UserDataSet>> element = userCache.get(id);
+        UserDataSet dataSet;
         if (element != null){
-            return element.get().getValue();
+            dataSet = element.get().getValue();
         } else {
-            return runInSession(session -> {
+            dataSet = runInSession(session -> {
                 UserDataSetDAO dao = new UserDataSetDAO(session);
                 return dao.read(id);
             });
+            userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
+            indexByName.put(dataSet.getName(), dataSet.getId());
         }
+        return dataSet;
     }
 
     public UserDataSet readByName(String name) {
-        SoftReference<CacheElement<String, UserDataSet>> element = userCacheByName.get(name);
+        Long id = indexByName.get(name);
+        UserDataSet dataSet;
+        SoftReference<CacheElement<String, UserDataSet>> element = userCache.get(id);
         if (element != null){
-            return element.get().getValue();
+            dataSet = element.get().getValue();
+        } else {
+            dataSet =  runInSession(session -> {
+                UserDataSetDAO dao = new UserDataSetDAO(session);
+                return dao.readByName(name);
+            });
+            userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
+            indexByName.put(dataSet.getName(), dataSet.getId());
         }
-        return runInSession(session -> {
-            UserDataSetDAO dao = new UserDataSetDAO(session);
-            return dao.readByName(name);
-        });
+        return dataSet;
     }
 
     public List<UserDataSet> readAll() {
-        return runInSession(session -> {
+        List<UserDataSet> dataSetList = new ArrayList<>();
+        dataSetList.addAll(runInSession(session -> {
             UserDataSetDAO dao = new UserDataSetDAO(session);
             return dao.readAll();
-        });
+        }));
+        for (UserDataSet dataSet : dataSetList){
+            userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
+            indexByName.put(dataSet.getName(), dataSet.getId());
+        }
+        return dataSetList;
     }
 
     public void shutdown() {
-        System.out.println("userCacheById hits: " + userCacheById.getHitCount());
-        System.out.println("userCacheById misses: " + userCacheById.getMissCount());
+        System.out.println("userCache hits: " + userCache.getHitCount());
+        System.out.println("userCache misses: " + userCache.getMissCount());
 
-        System.out.println("userCacheByName hits: " + userCacheByName.getHitCount());
-        System.out.println("userCacheByName misses: " + userCacheByName.getMissCount());
-
-        userCacheById.dispose();
-        userCacheByName.dispose();
+        userCache.dispose();
         sessionFactory.close();
     }
 

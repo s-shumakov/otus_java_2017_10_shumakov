@@ -23,7 +23,7 @@ public class Main {
         phones3.add(new PhoneDataSet("321-654-5432"));
 
         dbService.save(new UserDataSet("user1", phones1, new AddressDataSet("1st street")));
-        dbService.save(new UserDataSet("user2", phones2, new AddressDataSet("2st street")));
+        dbService.save(new UserDataSet("user21", phones2, new AddressDataSet("2st street")));
         dbService.save(new UserDataSet("user3", phones3, new AddressDataSet("3st street")));
         dbService.save(new UserDataSet("user4", new PhoneDataSet("2345678"), new AddressDataSet("4st street")));
         dbService.save(new UserDataSet("user5", new PhoneDataSet("7654356"), new AddressDataSet("5st street")));
@@ -35,8 +35,9 @@ public class Main {
 
         UserDataSet dataSet = dbService.read(1);
         System.out.println(dataSet);
-        dataSet = dbService.read(8);
+        dataSet = dbService.read(5);
         System.out.println(dataSet);
+        dataSet = dbService.read(7);
         dataSet = dbService.read(7);
         System.out.println(dataSet);
 
@@ -44,6 +45,7 @@ public class Main {
         System.out.println(dataSet);
         dataSet = dbService.readByName("user5");
         System.out.println(dataSet);
+        dataSet = dbService.readByName("user6");
         dataSet = dbService.readByName("user6");
         System.out.println(dataSet);
 
