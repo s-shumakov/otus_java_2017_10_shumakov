@@ -90,8 +90,7 @@ public class DBServiceImpl implements DBService {
                 UserDataSetDAO dao = new UserDataSetDAO(session);
                 return dao.readByName(name);
             });
-            userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
-            indexByName.put(dataSet.getName(), dataSet.getId());
+            putCache(dataSet);
         }
         return dataSet;
     }
@@ -103,8 +102,7 @@ public class DBServiceImpl implements DBService {
             return dao.readAll();
         }));
         for (UserDataSet dataSet : dataSetList){
-            userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
-            indexByName.put(dataSet.getName(), dataSet.getId());
+            putCache(dataSet);
         }
         return dataSetList;
     }
@@ -124,5 +122,10 @@ public class DBServiceImpl implements DBService {
             transaction.commit();
             return result;
         }
+    }
+
+    private void putCache(UserDataSet dataSet) {
+        userCache.put(new SoftReference<>(new CacheElement<>(dataSet.getId(), dataSet)));
+        indexByName.put(dataSet.getName(), dataSet.getId());
     }
 }
