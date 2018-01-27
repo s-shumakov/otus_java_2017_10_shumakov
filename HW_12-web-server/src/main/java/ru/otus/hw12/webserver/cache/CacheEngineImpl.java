@@ -1,4 +1,4 @@
-package ru.otus.hw11.webserver.cache;
+package ru.otus.hw12.webserver.cache;
 
 import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;
@@ -66,6 +66,10 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
 
     public int getMissCount() {
         return miss;
+    }
+
+    public int getElementsCount() {
+        return elements.size();
     }
 
     @Override

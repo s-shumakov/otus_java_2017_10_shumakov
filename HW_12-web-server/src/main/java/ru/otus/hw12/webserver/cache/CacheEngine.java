@@ -1,4 +1,4 @@
-package ru.otus.hw11.webserver.cache;
+package ru.otus.hw12.webserver.cache;
 
 import java.lang.ref.SoftReference;
 
@@ -11,6 +11,8 @@ public interface CacheEngine<K, V> {
     int getHitCount();
 
     int getMissCount();
+
+    int getElementsCount();
 
     void dispose();
 

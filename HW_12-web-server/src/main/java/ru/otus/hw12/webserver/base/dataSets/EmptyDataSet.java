@@ -1,4 +1,4 @@
-package ru.otus.hw11.webserver.base.dataSets;
+package ru.otus.hw12.webserver.base.dataSets;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

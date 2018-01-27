@@ -1,6 +1,6 @@
-package ru.otus.hw11.webserver.base;
+package ru.otus.hw12.webserver.base;
 
-import ru.otus.hw11.webserver.base.dataSets.UserDataSet;
+import ru.otus.hw12.webserver.base.dataSets.UserDataSet;
 import java.util.List;
 
 public interface DBService {

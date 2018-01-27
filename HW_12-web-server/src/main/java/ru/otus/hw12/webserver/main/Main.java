@@ -1,16 +1,19 @@
-package ru.otus.hw11.webserver.main;
+package ru.otus.hw12.webserver.main;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import ru.otus.hw11.webserver.base.*;
-import ru.otus.hw11.webserver.base.dataSets.*;
-import ru.otus.hw11.webserver.dbService.*;
-import ru.otus.hw11.webserver.servlet.AdminServlet;
-import ru.otus.hw11.webserver.servlet.LoginServlet;
-import ru.otus.hw11.webserver.servlet.TimerServlet;
+import ru.otus.hw12.webserver.base.DBService;
+import ru.otus.hw12.webserver.base.dataSets.AddressDataSet;
+import ru.otus.hw12.webserver.base.dataSets.PhoneDataSet;
+import ru.otus.hw12.webserver.base.dataSets.UserDataSet;
+import ru.otus.hw12.webserver.cache.CacheEngine;
+import ru.otus.hw12.webserver.cache.CacheEngineImpl;
+import ru.otus.hw12.webserver.dbService.DBServiceImpl;
+import ru.otus.hw12.webserver.servlet.AdminServlet;
+import ru.otus.hw12.webserver.servlet.LoginServlet;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,19 +23,22 @@ public class Main {
     private final static String PUBLIC_HTML = "public_html";
 
     public static void main(String[] args) throws Exception {
-        startDBservice();
-        startWebServer();
+        CacheEngine userCache = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
+        DBService dbService = new DBServiceImpl(userCache);
+
+        addUsers(dbService);
+
+        startWebServer(dbService, userCache);
     }
 
-    private static void startWebServer() throws Exception {
+    private static void startWebServer(DBService dbService, CacheEngine userCache) throws Exception {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase(PUBLIC_HTML);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
         context.addServlet(new ServletHolder(new LoginServlet("anonymous")), "/login");
-        context.addServlet(AdminServlet.class, "/admin");
-        context.addServlet(TimerServlet.class, "/timer");
+        context.addServlet(new ServletHolder(new AdminServlet(dbService, userCache)), "/admin");
 
         Server server = new Server(PORT);
         server.setHandler(new HandlerList(resourceHandler, context));
@@ -41,9 +47,7 @@ public class Main {
         server.join();
     }
 
-    private static void startDBservice(){
-        DBService dbService = new DBServiceImpl();
-
+    private static void addUsers(DBService dbService ) {
         Set<PhoneDataSet> phones1 = new HashSet<>();
         Set<PhoneDataSet> phones2 = new HashSet<>();
         Set<PhoneDataSet> phones3 = new HashSet<>();
@@ -64,17 +68,5 @@ public class Main {
         dbService.save(new UserDataSet("user8", new PhoneDataSet("2378732"), new AddressDataSet("8st street")));
         dbService.save(new UserDataSet("user9", new PhoneDataSet("6546657"), new AddressDataSet("9st street")));
         dbService.save(new UserDataSet("user10", new PhoneDataSet("6786733"), new AddressDataSet("10st street")));
-
-        dbService.read(1);
-        dbService.read(5);
-        dbService.read(7);
-        dbService.read(7);
-
-        dbService.readByName("user1");
-        dbService.readByName("user5");
-        dbService.readByName("user6");
-        dbService.readByName("user6");
-
-        dbService.shutdown();
     }
 }

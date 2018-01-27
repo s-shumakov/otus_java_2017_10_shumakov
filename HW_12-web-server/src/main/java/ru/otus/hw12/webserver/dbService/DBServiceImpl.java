@@ -1,4 +1,4 @@
-package ru.otus.hw11.webserver.dbService;
+package ru.otus.hw12.webserver.dbService;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -6,10 +6,15 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ru.otus.hw11.webserver.base.*;
-import ru.otus.hw11.webserver.base.dataSets.*;
-import ru.otus.hw11.webserver.cache.*;
-import ru.otus.hw11.webserver.dbService.dao.UserDataSetDAO;
+import ru.otus.hw12.webserver.base.dataSets.UserDataSet;
+import ru.otus.hw12.webserver.cache.CacheEngine;
+import ru.otus.hw12.webserver.cache.CacheEngineImpl;
+import ru.otus.hw12.webserver.dbService.dao.UserDataSetDAO;
+import ru.otus.hw12.webserver.base.DBService;
+import ru.otus.hw12.webserver.base.dataSets.AddressDataSet;
+import ru.otus.hw12.webserver.base.dataSets.EmptyDataSet;
+import ru.otus.hw12.webserver.base.dataSets.PhoneDataSet;
+import ru.otus.hw12.webserver.cache.CacheElement;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -20,11 +25,20 @@ import java.util.function.Function;
 
 public class DBServiceImpl implements DBService {
     private final SessionFactory sessionFactory;
-    private CacheEngine userCache = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
+    private CacheEngine userCache;
     private Map<String, Long> indexByName = new HashMap<>();
 
     public DBServiceImpl() {
+        userCache = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
+        sessionFactory = createSessionFactory(setConfiguration());
+    }
 
+    public DBServiceImpl(CacheEngine userCache) {
+        this.userCache = userCache;
+        sessionFactory = createSessionFactory(setConfiguration());
+    }
+
+    private static Configuration setConfiguration(){
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
         configuration.addAnnotatedClass(PhoneDataSet.class);
@@ -40,8 +54,7 @@ public class DBServiceImpl implements DBService {
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.useSSL", "false");
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
-
-        sessionFactory = createSessionFactory(configuration);
+        return configuration;
     }
 
     private static SessionFactory createSessionFactory(Configuration configuration) {
@@ -106,9 +119,6 @@ public class DBServiceImpl implements DBService {
     }
 
     public void shutdown() {
-        System.out.println("userCache hits: " + userCache.getHitCount());
-        System.out.println("userCache misses: " + userCache.getMissCount());
-
         userCache.dispose();
         sessionFactory.close();
     }

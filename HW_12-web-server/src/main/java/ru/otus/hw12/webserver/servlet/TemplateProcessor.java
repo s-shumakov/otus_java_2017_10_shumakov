@@ -1,4 +1,4 @@
-package ru.otus.hw11.webserver.servlet;
+package ru.otus.hw12.webserver.servlet;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -25,7 +25,7 @@ class TemplateProcessor {
     }
 
     String getPage(String filename, Map<String, Object> data) throws IOException {
-        try (Writer stream = new StringWriter();) {
+        try (Writer stream = new StringWriter()) {
             Template template = configuration.getTemplate(HTML_DIR + File.separator + filename);
             template.process(data, stream);
             return stream.toString();

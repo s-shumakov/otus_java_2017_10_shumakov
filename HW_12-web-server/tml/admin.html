@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Admin</title>
+    <script>
+        function refresh() {
+            location.reload();
+        }
+    </script>
 </head>
-<body>
+<body onload='setInterval(function(){refresh()}, ${refreshPeriod} );'>
 <div class="top">
     <img src="logo.png"/>
     <br/>
-    <a href="login">Login</a> <a href="admin">Admin</a> <a href="timer">Timer</a>
+    <a href="login">Login</a> <a href="admin">Admin</a>
 </div>
 
 <p>Login: ${login}</p>
-
 <p>Method: ${method}</p>
-
 <p>URL: ${URL}</p>
-
 <p>Locale: ${locale}</p>
-
 <p>SessionId: ${sessionId}</p>
-
 <p>Parameters: ${parameters}</p>
+<p>CacheHits: ${cacheHits}</p>
+<p>CacheMisses: ${cacheMisses}</p>
+<p>CacheElements: ${cacheElements}</p>
 
 </body>
 </html>
