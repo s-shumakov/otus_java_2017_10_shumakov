@@ -16,10 +16,6 @@ import java.util.Random;
 public class AdminServlet extends HttpServlet {
     private static final String DEFAULT_USER_NAME = "UNKNOWN";
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
-    private static final String CACHE_HITS = "cacheHits";
-    private static final String CACHE_MISSES = "cacheMisses";
-    private static final String CACHE_ELEMENTS = "cacheElements";
-    private static final String REFRESH_VARIABLE_NAME = "refreshPeriod";
     private static final int PERIOD_MS = 2000;
 
     private CacheEngine userCache;
@@ -34,10 +30,7 @@ public class AdminServlet extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
 
-        String requestLogin = (String) request.getSession().getAttribute(LoginServlet.LOGIN_PARAMETER_NAME);
-        String requestPass = (String) request.getSession().getAttribute(LoginServlet.PASS_PARAMETER_NAME);
-
-        if (requestLogin != null && requestLogin.equals("admin") && requestPass.equals("admin")) {
+        if (Authorization.isAdmin(request.getSession())) {
             readUser();
             Map<String, Object> pageVariables = createPageVariablesMap(request, userCache);
 
@@ -55,25 +48,28 @@ public class AdminServlet extends HttpServlet {
         pageVariables.put("locale", request.getLocale());
         pageVariables.put("sessionId", request.getSession().getId());
         pageVariables.put("parameters", request.getParameterMap().toString());
-        pageVariables.put(CACHE_HITS, userCache.getHitCount());
-        pageVariables.put(CACHE_MISSES, userCache.getMissCount());
-        pageVariables.put(CACHE_ELEMENTS, userCache.getElementsCount());
-        pageVariables.put(REFRESH_VARIABLE_NAME, String.valueOf(PERIOD_MS));
+        pageVariables.put("cacheHits", userCache.getHitCount());
+        pageVariables.put("cacheMisses", userCache.getMissCount());
+        pageVariables.put("cacheElements", userCache.getElementsCount());
+        pageVariables.put("refreshPeriod", String.valueOf(PERIOD_MS));
 
-        String login = (String) request.getSession().getAttribute(LoginServlet.LOGIN_PARAMETER_NAME);
+        String login = (String) request.getSession().getAttribute("login");
         pageVariables.put("login", login != null ? login : DEFAULT_USER_NAME);
         return pageVariables;
     }
 
     private void readUser(){
-        Random r = new Random();
-        int id = r.nextInt(10);
-        while (id == 0){
-            id = r.nextInt(10);
-        }
-        UserDataSet user = dbService.read(id);
+        Thread thread = new Thread(() -> {
+            Random r = new Random();
+            int id = r.nextInt(10);
+            while (id == 0){
+                id = r.nextInt(10);
+            }
+            UserDataSet user = dbService.read(id);
+            System.out.println(user);
+        });
+        thread.start();
 
-        System.out.println(user);
         System.out.println("userCache hits: " + userCache.getHitCount());
         System.out.println("userCache misses: " + userCache.getMissCount());
     }
