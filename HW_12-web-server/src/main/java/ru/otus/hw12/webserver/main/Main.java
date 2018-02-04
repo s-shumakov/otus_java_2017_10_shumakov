@@ -16,6 +16,7 @@ import ru.otus.hw12.webserver.servlet.AdminServlet;
 import ru.otus.hw12.webserver.servlet.LoginServlet;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Main {
@@ -27,7 +28,7 @@ public class Main {
         DBService dbService = new DBServiceImpl(userCache);
 
         addUsers(dbService);
-
+        startReadUsers(dbService);
         startWebServer(dbService, userCache);
     }
 
@@ -68,5 +69,25 @@ public class Main {
         dbService.save(new UserDataSet("user8", new PhoneDataSet("2378732"), new AddressDataSet("8st street")));
         dbService.save(new UserDataSet("user9", new PhoneDataSet("6546657"), new AddressDataSet("9st street")));
         dbService.save(new UserDataSet("user10", new PhoneDataSet("6786733"), new AddressDataSet("10st street")));
+    }
+
+    private static void startReadUsers(DBService dbService) {
+        Thread thread = new Thread(() -> {
+            for (int i = 0; i < 100; i++){
+                Random r = new Random();
+                int id = r.nextInt(10);
+                while (id == 0){
+                    id = r.nextInt(10);
+                }
+                UserDataSet user = dbService.read(id);
+                System.out.println(user);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }

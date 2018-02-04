@@ -44,6 +44,7 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
 
         if (Authorization.isAdmin(request)) {
+            Authorization.saveAdminSession(request);
             response.sendRedirect("admin");
         } else {
             String page = getErrorPage("Неверный логин или пароль!");

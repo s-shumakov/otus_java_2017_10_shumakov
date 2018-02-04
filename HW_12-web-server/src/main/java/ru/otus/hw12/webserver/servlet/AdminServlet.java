@@ -1,7 +1,6 @@
 package ru.otus.hw12.webserver.servlet;
 
 import ru.otus.hw12.webserver.base.DBService;
-import ru.otus.hw12.webserver.base.dataSets.UserDataSet;
 import ru.otus.hw12.webserver.cache.CacheEngine;
 
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class AdminServlet extends HttpServlet {
     private static final String DEFAULT_USER_NAME = "UNKNOWN";
@@ -30,8 +28,8 @@ public class AdminServlet extends HttpServlet {
                       HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
 
-        if (Authorization.isAdmin(request.getSession())) {
-            readUser();
+        if (Authorization.isAdmin(request)) {
+            getCacheStats();
             Map<String, Object> pageVariables = createPageVariablesMap(request, userCache);
 
             response.getWriter().println(TemplateProcessor.instance().getPage(ADMIN_PAGE_TEMPLATE, pageVariables));
@@ -58,18 +56,7 @@ public class AdminServlet extends HttpServlet {
         return pageVariables;
     }
 
-    private void readUser(){
-        Thread thread = new Thread(() -> {
-            Random r = new Random();
-            int id = r.nextInt(10);
-            while (id == 0){
-                id = r.nextInt(10);
-            }
-            UserDataSet user = dbService.read(id);
-            System.out.println(user);
-        });
-        thread.start();
-
+    private void getCacheStats(){
         System.out.println("userCache hits: " + userCache.getHitCount());
         System.out.println("userCache misses: " + userCache.getMissCount());
     }

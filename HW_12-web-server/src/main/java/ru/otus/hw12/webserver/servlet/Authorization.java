@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 public class Authorization {
     public static final String LOGIN_PARAMETER_NAME = "login";
     public static final String PASS_PARAMETER_NAME = "pass";
+    public static final String ADMIN_LOGIN = "admin";
+    public static final String ADMIN_PASS = "admin";
 
     public static String getLogin(HttpServletRequest request) {
         return request.getParameter(LOGIN_PARAMETER_NAME);
@@ -15,28 +17,32 @@ public class Authorization {
         return request.getParameter(PASS_PARAMETER_NAME);
     }
 
-    public static boolean isAdmin(HttpServletRequest request) {
+    public static void saveAdminSession(HttpServletRequest request) {
         String requestLogin = getLogin(request);
         String requestPass = getPass(request);
-        if (requestLogin != null && requestLogin.equals("admin") && requestPass.equals("admin")) {
-            saveToSession(request, LOGIN_PARAMETER_NAME, requestLogin);
-            saveToSession(request, PASS_PARAMETER_NAME, requestPass);
-            return true;
-        }
-        return false;
+        request.getSession().setAttribute(LOGIN_PARAMETER_NAME, requestLogin);
+        request.getSession().setAttribute(PASS_PARAMETER_NAME, requestPass);
     }
 
-    public static boolean isAdmin(HttpSession session) {
+    public static boolean isAdmin(HttpServletRequest request) {
+        if (isAdmin(request.getSession())) {
+            return true;
+        }
+        String requestLogin = getLogin(request);
+        String requestPass = getPass(request);
+        return checkAdmin(requestLogin, requestPass);
+    }
+
+    private static boolean isAdmin(HttpSession session) {
         String requestLogin = (String) session.getAttribute(LOGIN_PARAMETER_NAME);
         String requestPass = (String) session.getAttribute(PASS_PARAMETER_NAME);
-        if (requestLogin != null && requestLogin.equals("admin") && requestPass.equals("admin")) {
+        return checkAdmin(requestLogin, requestPass);
+    }
+
+    private static boolean checkAdmin(String login, String pass){
+        if (login != null && login.equals(ADMIN_LOGIN) && pass.equals(ADMIN_PASS)) {
             return true;
         }
         return false;
     }
-
-    private static void saveToSession(HttpServletRequest request, String paramName, String paramVal) {
-        request.getSession().setAttribute(paramName, paramVal);
-    }
-
 }
