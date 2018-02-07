@@ -16,10 +16,6 @@ public class LoginServlet extends HttpServlet {
 
     private String login;
 
-    public LoginServlet(String login) {
-        this.login = login;
-    }
-
     private String getLoginPage(String login) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put(LOGIN_VARIABLE_NAME, login == null ? "" : login);

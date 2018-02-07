@@ -1,8 +1,11 @@
 package ru.otus.hw13.war.servlet;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.otus.hw13.war.base.DBService;
 import ru.otus.hw13.war.cache.CacheEngine;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +22,11 @@ public class AdminServlet extends HttpServlet {
     private CacheEngine userCache;
     private DBService dbService;
 
-    public AdminServlet(DBService dbService, CacheEngine userCache) {
-        this.userCache = userCache;
-        this.dbService = dbService;
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
+        this.userCache = (CacheEngine)context.getBean("userCache");
+        this.dbService = (DBService)context.getBean("dbService");
     }
 
     public void doGet(HttpServletRequest request,
