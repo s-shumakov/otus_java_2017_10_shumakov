@@ -1,6 +1,8 @@
 package ru.otus.hw13.war.servlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.otus.hw13.war.base.DBService;
 import ru.otus.hw13.war.base.dataSets.AddressDataSet;
@@ -8,6 +10,8 @@ import ru.otus.hw13.war.base.dataSets.PhoneDataSet;
 import ru.otus.hw13.war.base.dataSets.UserDataSet;
 import ru.otus.hw13.war.cache.CacheEngine;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,22 +20,34 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+
 public class AdminServlet extends HttpServlet {
     private static final String DEFAULT_USER_NAME = "UNKNOWN";
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private static final int PERIOD_MS = 2000;
 
+    @Inject
     private CacheEngine userCache;
+    @Inject
     private DBService dbService;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
-        this.userCache = (CacheEngine)context.getBean("userCache");
-        this.dbService = (DBService)context.getBean("dbService");
+//        initFromContext(config);
+        initInject();
 
         addUsers(dbService);
         startReadUsers(dbService);
+    }
+
+    private void initFromContext(ServletConfig config) {
+        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
+        this.userCache = (CacheEngine)context.getBean("userCache");
+        this.dbService = (DBService)context.getBean("dbService");
+    }
+
+    private void initInject() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     public void doGet(HttpServletRequest request,
