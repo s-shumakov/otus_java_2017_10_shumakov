@@ -8,34 +8,25 @@ import java.util.Arrays;
 public class SortThread extends Thread {
     private static final Logger log = LogManager.getLogger();
     private int array[];
-    private int tmpArr[];
+    private int sortedArray[];
     private int startPos;
-    private int endPos;
+    private int length;
+    Sorter sorter;
 
-    SortThread(int array[], int tmpArr[], int startPos, int endPos){
+    SortThread(int array[], int sortedArray[], int startPos, int length, Sorter sorter){
         this.array = array;
-        this.tmpArr = tmpArr;
+        this.sortedArray = sortedArray;
         this.startPos = startPos;
-        this.endPos = endPos;
+        this.length = length;
+        this.sorter = sorter;
     }
     public void run() {
-        sort(array, tmpArr, startPos, endPos);
+        log.info("start SortThread from: " + startPos + " to " + (startPos + length));
+        int[] tmpArr = new int[length];
+        System.arraycopy(array, startPos, tmpArr, 0, length);
+        Arrays.sort(tmpArr);
+        System.arraycopy(tmpArr, 0, sortedArray, startPos, length);
+        log.info("end SortThread from: " + startPos + " to " + (startPos + length));
     }
 
-    public static int[] sort(int array[], int newArray[], int startPos, int endPos){
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        int length = endPos - startPos + 1;
-        log.info("startPos: " + startPos + " endPos: " + endPos + " length: " + length);
-        System.arraycopy(array, startPos, newArray, 0, length);
-//        log.info("newArray:");
-//        log.info(Arrays.toString(newArray));
-        Arrays.sort(newArray);
-//        log.info("newArray sorted:" );
-//        log.info(Arrays.toString(newArray));
-        return newArray;
-    }
 }
