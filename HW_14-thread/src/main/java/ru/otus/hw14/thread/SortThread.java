@@ -11,14 +11,12 @@ public class SortThread extends Thread {
     private int sortedArray[];
     private int startPos;
     private int length;
-    Sorter sorter;
 
-    SortThread(int array[], int sortedArray[], int startPos, int length, Sorter sorter){
+    SortThread(int array[], int sortedArray[], int startPos, int length){
         this.array = array;
         this.sortedArray = sortedArray;
         this.startPos = startPos;
         this.length = length;
-        this.sorter = sorter;
     }
     public void run() {
         log.info("start SortThread from: " + startPos + " to " + (startPos + length));

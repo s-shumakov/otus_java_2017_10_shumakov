@@ -11,18 +11,18 @@ import java.util.Random;
 public class Sorter {
     private static final Logger log = LogManager.getLogger();
 
-    public void sort(int[] array, int threadsCount) throws InterruptedException {
+    public void parallelSort(int[] array, int threadsCount) throws InterruptedException {
         int startPos;
         int part = array.length / threadsCount;
         int[] sortedArray = new int[array.length];
         int[] tmpArr = new int[part];
 
         List<Thread> threadPool = new ArrayList();
-        log.info("source Array: " + Arrays.toString(array));
+//        log.info("source Array: " + Arrays.toString(array));
 
         for (int i = 0; i < threadsCount; i++) {
             startPos = i * part;
-            Thread thread = new SortThread(array, sortedArray, startPos, tmpArr.length, this);
+            Thread thread = new SortThread(array, sortedArray, startPos, tmpArr.length);
             threadPool.add(thread);
         }
 
@@ -38,8 +38,8 @@ public class Sorter {
         Arrays.sort(sortedArray);
         Arrays.sort(array);
 
-        log.info("sortedArray: " + Arrays.toString(sortedArray));
-        log.info("array: " + Arrays.toString(array));
+//        log.info("sortedArray: " + Arrays.toString(sortedArray));
+//        log.info("array: " + Arrays.toString(array));
     }
 
     public int[] initArray(int lenght){
