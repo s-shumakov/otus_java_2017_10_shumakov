@@ -8,14 +8,13 @@ import java.util.Arrays;
 
 public class SorterTest {
     private static final Logger log = LogManager.getLogger();
-    private static final int ARRAY_SIZE = 1_000_000;
+    private static final int ARRAY_SIZE = 20_000_000;
     private static final int SIZE = 4;
 
     @org.junit.Test
     public void testParallelSort() throws Exception {
         Sorter sorter = new Sorter();
         int[] sourceArray = sorter.initArray(ARRAY_SIZE);
-
         int[] testArray = new int[ARRAY_SIZE];
         System.arraycopy(sourceArray, 0, testArray, 0, ARRAY_SIZE);
 
