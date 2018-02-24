@@ -7,22 +7,16 @@ import java.util.Arrays;
 
 public class SortThread extends Thread {
     private static final Logger log = LogManager.getLogger();
-    private int array[];
-    private int startPos;
-    private int length;
+    private final int array[];
 
-    SortThread(int array[], int startPos, int length){
+    SortThread(int array[]){
         this.array = array;
-        this.startPos = startPos;
-        this.length = length;
     }
+
     public void run() {
-        log.info("start SortThread from: " + startPos + " to " + (startPos + length));
-        int[] tmpArr = new int[length];
-        System.arraycopy(array, startPos, tmpArr, 0, length);
-        Arrays.sort(tmpArr);
-        System.arraycopy(tmpArr, 0, array, startPos, length);
-        log.info("end SortThread from: " + startPos + " to " + (startPos + length));
+        log.info("start SortThread");
+        Arrays.sort(array);
+        log.info("end SortThread");
     }
 
 }
