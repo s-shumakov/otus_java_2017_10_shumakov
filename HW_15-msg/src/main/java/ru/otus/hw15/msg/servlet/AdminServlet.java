@@ -1,5 +1,7 @@
 package ru.otus.hw15.msg.servlet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -30,38 +32,32 @@ public class AdminServlet extends HttpServlet implements FrontendService{
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private static final int PERIOD_MS = 2000;
     private Address address;
-    private MessageSystemContext context;
+    private final Map<Integer, String> users = new HashMap<>();
+    private static final Logger log = LogManager.getLogger();
 
     @Inject
     private CacheEngine userCache;
     @Inject
     private DBService dbService;
+    @Inject
+    private MessageSystemContext context;
 
     public void init() {
-        MessageSystem messageSystem = new MessageSystem();
-        MessageSystemContext context = new MessageSystemContext(messageSystem);
-        Address frontAddress = new Address("Frontend");
-        context.setFrontAddress(frontAddress);
-        messageSystem.start();
-        this.context = context;
-        this.address = frontAddress;
-    }
-
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+        log.info("AdminServlet init(ServletConfig config)");
 //        initFromContext(config);
         initInject();
 
-        MessageSystem messageSystem = new MessageSystem();
-        MessageSystemContext context = new MessageSystemContext(messageSystem);
-        Address frontAddress = new Address("Frontend");
-        context.setFrontAddress(frontAddress);
-        messageSystem.start();
-        this.context = context;
-        this.address = frontAddress;
+        address = new Address("Frontend");
+        context.setFrontAddress(address);
+        context.getMessageSystem().addAddressee(this);
+
+        Address dbAddress = new Address("DB");
+        context.setDbAddress(dbAddress);
+
+        dbService.init();
+        context.getMessageSystem().start();
 
         addUsers(dbService);
-        startReadUsers(dbService);
     }
 
     private void initFromContext(ServletConfig config) {
@@ -74,12 +70,13 @@ public class AdminServlet extends HttpServlet implements FrontendService{
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    public void doGet(HttpServletRequest request,
-                      HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("AdminServlet doGet");
         response.setContentType("text/html;charset=utf-8");
 
         if (Authorization.isAdmin(request)) {
             handleRequest("user1");
+            startReadUsers(dbService);
             getCacheStats();
             Map<String, Object> pageVariables = createPageVariablesMap(request, userCache);
 
@@ -108,8 +105,8 @@ public class AdminServlet extends HttpServlet implements FrontendService{
     }
 
     private void getCacheStats(){
-        System.out.println("userCache hits: " + userCache.getHitCount());
-        System.out.println("userCache misses: " + userCache.getMissCount());
+        log.info("userCache hits: " + userCache.getHitCount());
+        log.info("userCache misses: " + userCache.getMissCount());
     }
 
     private static void addUsers(DBService dbService ) {
@@ -137,20 +134,13 @@ public class AdminServlet extends HttpServlet implements FrontendService{
 
     private static void startReadUsers(DBService dbService) {
         Thread thread = new Thread(() -> {
-            for (int i = 0; i < 100; i++){
-                Random r = new Random();
-                int id = r.nextInt(10);
-                while (id == 0){
-                    id = r.nextInt(10);
-                }
-                UserDataSet user = dbService.read(id);
-                System.out.println(user);
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            Random r = new Random();
+            int id = r.nextInt(10);
+            while (id == 0){
+                id = r.nextInt(10);
             }
+            UserDataSet user = dbService.read(id);
+            log.info(user);
         });
         thread.start();
     }
@@ -164,7 +154,8 @@ public class AdminServlet extends HttpServlet implements FrontendService{
 
     @Override
     public void addUser(int id, String name) {
-
+        users.put(id, name);
+        log.info("User: " + name + " has id: " + id);
     }
 
     @Override

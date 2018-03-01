@@ -2,16 +2,15 @@
 
 <web-app>
 
-    <display-name>HW_13-war</display-name>
-    <description>Example of war file</description>
+    <display-name>HW_15-msg</display-name>
 
     <servlet>
         <servlet-name>loginServlet</servlet-name>
-        <servlet-class>ru.otus.hw13.war.servlet.LoginServlet</servlet-class>
+        <servlet-class>ru.otus.hw15.msg.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>adminServlet</servlet-name>
-        <servlet-class>ru.otus.hw13.war.servlet.AdminServlet</servlet-class>
+        <servlet-class>ru.otus.hw15.msg.servlet.AdminServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

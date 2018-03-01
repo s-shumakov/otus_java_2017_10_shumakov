@@ -4,6 +4,9 @@ package ru.otus.hw15.msg;
 import ru.otus.hw15.msg.app.DBService;
 import ru.otus.hw15.msg.app.FrontendService;
 import ru.otus.hw15.msg.app.MessageSystemContext;
+import ru.otus.hw15.msg.cache.CacheEngine;
+import ru.otus.hw15.msg.cache.CacheEngineImpl;
+import ru.otus.hw15.msg.dataSets.UserDataSet;
 import ru.otus.hw15.msg.dbService.DBServiceImpl;
 import ru.otus.hw15.msg.messageSystem.*;
 import ru.otus.hw15.msg.servlet.AdminServlet;
@@ -20,13 +23,13 @@ public class MSMain {
         Address dbAddress = new Address("DB");
         context.setDbAddress(dbAddress);
 
-//        FrontendService frontendService = new FrontendServiceImpl(context, frontAddress);
+        CacheEngine userCache = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
+        DBService dbService = new DBServiceImpl(context, dbAddress, userCache);
+        dbService.init();
+
+//        FrontendService frontendService = new AdminServlet(context, frontAddress, dbService);
         FrontendService frontendService = new AdminServlet();
         frontendService.init();
-
-//        DBService dbService = new DBServiceImpl(context, dbAddress);
-        DBService dbService = new DBServiceImpl();
-        dbService.init();
 
         messageSystem.start();
 

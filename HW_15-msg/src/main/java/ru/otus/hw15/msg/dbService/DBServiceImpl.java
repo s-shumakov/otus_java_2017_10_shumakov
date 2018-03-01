@@ -1,5 +1,7 @@
 package ru.otus.hw15.msg.dbService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,7 +16,6 @@ import ru.otus.hw15.msg.dataSets.PhoneDataSet;
 import ru.otus.hw15.msg.dataSets.UserDataSet;
 import ru.otus.hw15.msg.cache.CacheElement;
 import ru.otus.hw15.msg.cache.CacheEngine;
-import ru.otus.hw15.msg.cache.CacheEngineImpl;
 import ru.otus.hw15.msg.dbService.dao.UserDataSetDAO;
 import ru.otus.hw15.msg.messageSystem.Address;
 import ru.otus.hw15.msg.messageSystem.MessageSystem;
@@ -32,19 +33,23 @@ public class DBServiceImpl implements DBService {
     private Map<String, Long> indexByName = new HashMap<>();
     private final Address address;
     private final MessageSystemContext context;
+    private static final Logger log = LogManager.getLogger();
 
-    public DBServiceImpl() {
-        userCache = new CacheEngineImpl<Long, UserDataSet>(5, 0, 0, true);
+    public DBServiceImpl(MessageSystemContext context, Address address, CacheEngine userCache) {
+        log.info("DBServiceImpl(MessageSystemContext context, Address address, CacheEngine userCache)");
         sessionFactory = createSessionFactory(setConfiguration());
+        this.context = context;
+        this.address = address;
+        this.userCache = userCache;
+    }
 
-        MessageSystem messageSystem = new MessageSystem();
-        context = new MessageSystemContext(messageSystem);
-        address = new Address("DB");
-        context.setDbAddress(address);
+    public void init() {
+        log.info("DBServiceImpl init()");
         context.getMessageSystem().addAddressee(this);
     }
 
     public DBServiceImpl(CacheEngine userCache) {
+        log.info("DBServiceImpl(CacheEngine userCache)");
         this.userCache = userCache;
         sessionFactory = createSessionFactory(setConfiguration());
 
@@ -78,11 +83,6 @@ public class DBServiceImpl implements DBService {
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
-    }
-
-    @Override
-    public void init() {
-
     }
 
     public void save(UserDataSet dataSet) {

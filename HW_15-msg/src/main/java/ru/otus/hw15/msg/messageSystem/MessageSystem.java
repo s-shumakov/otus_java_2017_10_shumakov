@@ -1,15 +1,16 @@
 package ru.otus.hw15.msg.messageSystem;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class MessageSystem {
-    private final static Logger logger = Logger.getLogger(MessageSystem.class.getName());
+    private static final Logger log = LogManager.getLogger();
     private static final int DEFAULT_STEP_TIME = 10;
 
     private final List<Thread> workers;
@@ -33,11 +34,11 @@ public final class MessageSystem {
 
     @SuppressWarnings("InfiniteLoopStatement")
     public void start() {
+        log.info("MessageSystem start");
         for (Map.Entry<Address, Addressee> entry : addresseeMap.entrySet()) {
             String name = "MS-worker-" + entry.getKey().getId();
             Thread thread = new Thread(() -> {
                 while (true) {
-
                     ConcurrentLinkedQueue<Message> queue = messagesMap.get(entry.getKey());
                     while (!queue.isEmpty()) {
                         Message message = queue.poll();
@@ -46,17 +47,18 @@ public final class MessageSystem {
                     try {
                         Thread.sleep(MessageSystem.DEFAULT_STEP_TIME);
                     } catch (InterruptedException e) {
-                        logger.log(Level.INFO, "Thread interrupted. Finishing: " + name);
+                        log.info("Thread interrupted. Finishing: " + name);
                         return;
                     }
                     if (Thread.currentThread().isInterrupted()) {
-                        logger.log(Level.INFO, "Finishing: " + name);
+                        log.info("Finishing: " + name);
                         return;
                     }
                 }
             });
             thread.setName(name);
             thread.start();
+            log.info("Thread " + thread.getName() + " started");
             workers.add(thread);
         }
     }
