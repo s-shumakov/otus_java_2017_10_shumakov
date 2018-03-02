@@ -1,5 +1,6 @@
 package ru.otus.hw15.msg.app;
 
+import ru.otus.hw15.msg.cache.CacheEngine;
 import ru.otus.hw15.msg.dataSets.UserDataSet;
 import ru.otus.hw15.msg.messageSystem.Addressee;
 import ru.otus.hw15.msg.messageSystem.MessageSystem;
@@ -20,4 +21,6 @@ public interface DBService extends Addressee {
     void shutdown();
 
     MessageSystem getMS();
+
+    CacheEngine getCache();
 }

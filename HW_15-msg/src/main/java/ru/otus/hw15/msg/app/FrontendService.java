@@ -5,8 +5,14 @@ import ru.otus.hw15.msg.messageSystem.Addressee;
 public interface FrontendService extends Addressee {
     void init();
 
-    void handleRequest(String login);
+    void createUsers();
 
-    void addUser(int id, String name);
+    void readRandomUser() throws InterruptedException;
+
+    void getCacheStats();
+
+    void setUserName(String userName);
+
+    void setCacheStats(int hitCount, int missCount);
 }
 

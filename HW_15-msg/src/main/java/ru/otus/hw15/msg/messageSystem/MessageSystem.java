@@ -3,10 +3,7 @@ package ru.otus.hw15.msg.messageSystem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class MessageSystem {
@@ -26,6 +23,7 @@ public final class MessageSystem {
     public void addAddressee(Addressee addressee) {
         addresseeMap.put(addressee.getAddress(), addressee);
         messagesMap.put(addressee.getAddress(), new ConcurrentLinkedQueue<>());
+        log.info("addAddressee: " + addressee.getAddress().getId());
     }
 
     public void sendMessage(Message message) {
@@ -41,6 +39,7 @@ public final class MessageSystem {
                 while (true) {
                     ConcurrentLinkedQueue<Message> queue = messagesMap.get(entry.getKey());
                     while (!queue.isEmpty()) {
+                        log.info("queue: " + Arrays.toString(queue.toArray()));
                         Message message = queue.poll();
                         message.exec(entry.getValue());
                     }

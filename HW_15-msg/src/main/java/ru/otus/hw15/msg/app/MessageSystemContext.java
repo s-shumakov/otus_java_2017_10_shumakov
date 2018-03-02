@@ -4,10 +4,13 @@ import ru.otus.hw15.msg.messageSystem.Address;
 import ru.otus.hw15.msg.messageSystem.MessageSystem;
 
 public class MessageSystemContext {
-    private final MessageSystem messageSystem;
-
+    private MessageSystem messageSystem;
     private Address frontAddress;
     private Address dbAddress;
+
+    public MessageSystemContext(){
+
+    }
 
     public MessageSystemContext(MessageSystem messageSystem) {
         this.messageSystem = messageSystem;
@@ -32,4 +35,9 @@ public class MessageSystemContext {
     public void setDbAddress(Address dbAddress) {
         this.dbAddress = dbAddress;
     }
+
+    public void setMessageSystem(MessageSystem messageSystem) {
+        this.messageSystem = messageSystem;
+    }
+
 }

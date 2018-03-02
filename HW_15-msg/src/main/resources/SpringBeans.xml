@@ -6,12 +6,18 @@
     <bean id="messageSystem" class="ru.otus.hw15.msg.messageSystem.MessageSystem">
     </bean>
 
-    <bean id="messageSystemContext" class="ru.otus.hw15.msg.app.MessageSystemContext">
-        <constructor-arg name="messageSystem" ref="messageSystem"/>
-    </bean>
-
     <bean id="dbAddress" class="ru.otus.hw15.msg.messageSystem.Address">
         <constructor-arg name="id" value="DB"/>
+    </bean>
+
+    <bean id="frontAddress" class="ru.otus.hw15.msg.messageSystem.Address">
+        <constructor-arg name="id" value="Frontend"/>
+    </bean>
+
+    <bean id="messageSystemContext" class="ru.otus.hw15.msg.app.MessageSystemContext">
+        <property name="messageSystem" ref="messageSystem"/>
+        <property name="frontAddress" ref="frontAddress"/>
+        <property name="dbAddress" ref="dbAddress"/>
     </bean>
 
     <bean id="userCache" class="ru.otus.hw15.msg.cache.CacheEngineImpl">
@@ -21,7 +27,7 @@
         <constructor-arg name="isEternal" value="true"/>
     </bean>
 
-    <bean id="dbService" class="ru.otus.hw15.msg.dbService.DBServiceImpl">
+    <bean id="dbService" class="ru.otus.hw15.msg.dbService.DBServiceImpl" init-method="init">
         <constructor-arg name="userCache" ref="userCache"/>
         <constructor-arg name="context" ref="messageSystemContext"/>
         <constructor-arg name="address" ref="dbAddress"/>

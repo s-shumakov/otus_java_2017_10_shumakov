@@ -48,17 +48,6 @@ public class DBServiceImpl implements DBService {
         context.getMessageSystem().addAddressee(this);
     }
 
-    public DBServiceImpl(CacheEngine userCache) {
-        log.info("DBServiceImpl(CacheEngine userCache)");
-        this.userCache = userCache;
-        sessionFactory = createSessionFactory(setConfiguration());
-
-        MessageSystem messageSystem = new MessageSystem();
-        context = new MessageSystemContext(messageSystem);
-        address = new Address("DB");
-        context.setDbAddress(address);
-    }
-
     private static Configuration setConfiguration(){
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(UserDataSet.class);
@@ -139,6 +128,7 @@ public class DBServiceImpl implements DBService {
         return dataSetList;
     }
 
+    @Override
     public void shutdown() {
         userCache.dispose();
         sessionFactory.close();
@@ -152,6 +142,11 @@ public class DBServiceImpl implements DBService {
     @Override
     public MessageSystem getMS() {
         return context.getMessageSystem();
+    }
+
+    @Override
+    public CacheEngine getCache() {
+        return userCache;
     }
 
     private <R> R runInSession(Function<Session, R> function) {
