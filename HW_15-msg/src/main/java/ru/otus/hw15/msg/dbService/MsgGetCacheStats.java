@@ -2,10 +2,7 @@ package ru.otus.hw15.msg.dbService;
 
 import ru.otus.hw15.msg.app.DBService;
 import ru.otus.hw15.msg.app.MsgToDB;
-import ru.otus.hw15.msg.dataSets.UserDataSet;
 import ru.otus.hw15.msg.messageSystem.Address;
-
-import java.util.Random;
 
 public class MsgGetCacheStats extends MsgToDB {
     public MsgGetCacheStats(Address from, Address to) {
