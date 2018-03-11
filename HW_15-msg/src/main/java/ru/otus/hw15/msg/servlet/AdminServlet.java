@@ -43,7 +43,7 @@ public class AdminServlet extends HttpServlet implements FrontendService{
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("AdminServlet doGet");
+        log.info("AdminServlet doGet " + this);
         response.setContentType("text/html;charset=utf-8");
 
         if (Authorization.isAdmin(request)) {
@@ -91,12 +91,14 @@ public class AdminServlet extends HttpServlet implements FrontendService{
 
     @Override
     public void readRandomUser() {
+        log.info("readRandomUser");
         Message message = new MsgReadUser(getAddress(), context.getDbAddress());
         context.getMessageSystem().sendMessage(message);
     }
 
     @Override
     public void getCacheStats() {
+        log.info("getCacheStats");
         Message message = new MsgGetCacheStats(getAddress(), context.getDbAddress());
         context.getMessageSystem().sendMessage(message);
     }
