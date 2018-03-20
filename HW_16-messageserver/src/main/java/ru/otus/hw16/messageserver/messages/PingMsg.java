@@ -8,8 +8,8 @@ import ru.otus.hw16.messageserver.app.Msg;
 public class PingMsg extends Msg {
     private final long time;
 
-    public PingMsg() {
-        super(PingMsg.class);
+    public PingMsg(String from, String to) {
+        super(from, to, PingMsg.class);
         time = System.currentTimeMillis();
     }
 

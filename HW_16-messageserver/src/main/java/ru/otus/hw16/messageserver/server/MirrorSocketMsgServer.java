@@ -1,5 +1,7 @@
 package ru.otus.hw16.messageserver.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.otus.hw16.messageserver.app.MsgWorker;
 import ru.otus.hw16.messageserver.channel.Blocks;
 import ru.otus.hw16.messageserver.channel.SocketMsgWorker;
@@ -11,14 +13,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by tully.
  */
 public class MirrorSocketMsgServer implements MirrorSocketMsgServerMBean {
-    private static final Logger logger = Logger.getLogger(MirrorSocketMsgServer.class.getName());
+    private static final Logger logger = LogManager.getLogger();
 
     private static final int THREADS_NUMBER = 1;
     private static final int PORT = 5050;
@@ -34,15 +34,36 @@ public class MirrorSocketMsgServer implements MirrorSocketMsgServerMBean {
 
     @Blocks
     public void start() throws Exception {
-        executor.submit(this::mirror);
+//        executor.submit(this::mirror);
+        executor.submit(this::sentToClient);
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             logger.info("Server started on port: " + serverSocket.getLocalPort());
             while (!executor.isShutdown()) {
                 Socket socket = serverSocket.accept(); //blocks
-                SocketMsgWorker client = new SocketMsgWorker(socket);
+                SocketMsgWorker client = new SocketMsgWorker(socket, "ServerSocket");
                 client.init();
                 clients.add(client);
+            }
+        }
+    }
+
+    @SuppressWarnings("InfiniteLoopStatement")
+    private void sentToClient() {
+        while (true) {
+            for (MsgWorker client : clients) {
+                Msg msg = client.pool();
+                while (msg != null) {
+                    logger.info("client: " + client.getName());
+                    logger.info("Sent message from: " + msg.getFrom() + ", to: " + msg.getTo() + ", message: " + msg.toString());
+                    client.send(msg);
+                    msg = client.pool();
+                }
+            }
+            try {
+                Thread.sleep(MIRROR_DELAY_MS);
+            } catch (InterruptedException e) {
+                logger.warn(e.toString());
             }
         }
     }
@@ -53,7 +74,7 @@ public class MirrorSocketMsgServer implements MirrorSocketMsgServerMBean {
             for (MsgWorker client : clients) {
                 Msg msg = client.pool();
                 while (msg != null) {
-                    logger.log(Level.INFO, "Mirroring the message: " + msg.toString());
+                    logger.info("Mirroring the message: " + msg.toString());
                     client.send(msg);
                     msg = client.pool();
                 }
@@ -61,7 +82,7 @@ public class MirrorSocketMsgServer implements MirrorSocketMsgServerMBean {
             try {
                 Thread.sleep(MIRROR_DELAY_MS);
             } catch (InterruptedException e) {
-                logger.log(Level.SEVERE, e.toString());
+                logger.warn(e.toString());
             }
         }
     }

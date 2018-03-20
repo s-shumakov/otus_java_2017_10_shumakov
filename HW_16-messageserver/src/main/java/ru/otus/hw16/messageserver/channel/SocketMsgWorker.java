@@ -1,6 +1,8 @@
 package ru.otus.hw16.messageserver.channel;
 
 import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -16,14 +18,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by tully.
  */
 public class SocketMsgWorker implements MsgWorker {
-    private static final Logger logger = Logger.getLogger(SocketMsgWorker.class.getName());
+    private static final Logger logger = LogManager.getLogger();
     private static final int WORKERS_COUNT = 2;
 
     private final BlockingQueue<Msg> output = new LinkedBlockingQueue<>();
@@ -32,8 +32,16 @@ public class SocketMsgWorker implements MsgWorker {
     private final ExecutorService executor;
     private final Socket socket;
 
-    public SocketMsgWorker(Socket socket) {
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    private final String name;
+
+    public SocketMsgWorker(Socket socket, String name) {
         this.socket = socket;
+        this.name = name;
         this.executor = Executors.newFixedThreadPool(WORKERS_COUNT);
     }
 
@@ -72,7 +80,7 @@ public class SocketMsgWorker implements MsgWorker {
                 out.println();//line with json + an empty line
             }
         } catch (InterruptedException | IOException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 
@@ -82,7 +90,7 @@ public class SocketMsgWorker implements MsgWorker {
             String inputLine;
             StringBuilder stringBuilder = new StringBuilder();
             while ((inputLine = in.readLine()) != null) { //blocks
-                logger.log(Level.INFO, "Message received: " + inputLine);
+                logger.info("Message received: " + inputLine);
                 stringBuilder.append(inputLine);
                 if (inputLine.isEmpty()) { //empty line is the end of the message
                     String json = stringBuilder.toString();
@@ -92,7 +100,7 @@ public class SocketMsgWorker implements MsgWorker {
                 }
             }
         } catch (IOException | ParseException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.warn(e.getMessage());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

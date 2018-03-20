@@ -15,5 +15,7 @@ public interface MsgWorker {
     @Blocks
     Msg take() throws InterruptedException;
 
+    String getName();
+
     void close() throws IOException;
 }

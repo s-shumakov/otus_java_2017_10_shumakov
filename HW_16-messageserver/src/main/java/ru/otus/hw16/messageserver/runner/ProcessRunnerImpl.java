@@ -1,13 +1,13 @@
 package ru.otus.hw16.messageserver.runner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.otus.hw16.messageserver.app.ProcessRunner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by tully.
@@ -40,7 +40,7 @@ public class ProcessRunnerImpl implements ProcessRunner {
     }
 
     private class StreamListener extends Thread {
-        private final Logger logger = Logger.getLogger(StreamListener.class.getName());
+        private final Logger logger = LogManager.getLogger();
 
         private final InputStream is;
         private final String type;
@@ -59,7 +59,7 @@ public class ProcessRunnerImpl implements ProcessRunner {
                     out.append(type).append('>').append(line).append('\n');
                 }
             } catch (IOException e) {
-                logger.log(Level.SEVERE, e.getMessage());
+                logger.warn(e.getMessage());
             }
         }
     }

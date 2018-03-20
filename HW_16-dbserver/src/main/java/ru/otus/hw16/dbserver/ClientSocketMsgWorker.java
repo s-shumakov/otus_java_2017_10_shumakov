@@ -11,14 +11,16 @@ import java.net.Socket;
 class ClientSocketMsgWorker extends SocketMsgWorker {
 
     private final Socket socket;
+    private final String name;
 
-    ClientSocketMsgWorker(String host, int port) throws IOException {
-        this(new Socket(host, port));
+    ClientSocketMsgWorker(String host, int port, String name) throws IOException {
+        this(new Socket(host, port), name);
     }
 
-    private ClientSocketMsgWorker(Socket socket) throws IOException {
-        super(socket);
+    private ClientSocketMsgWorker(Socket socket, String name) throws IOException {
+        super(socket, name);
         this.socket = socket;
+        this.name = name;
     }
 
     public void close() throws IOException {

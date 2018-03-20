@@ -1,5 +1,7 @@
 package ru.otus.hw16.messageserver;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.otus.hw16.messageserver.runner.ProcessRunnerImpl;
 import ru.otus.hw16.messageserver.server.MirrorSocketMsgServer;
 
@@ -10,16 +12,15 @@ import java.lang.management.ManagementFactory;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by tully.
  */
 public class ServerMain {
-    private static final Logger logger = Logger.getLogger(ServerMain.class.getName());
+    private static final Logger logger = LogManager.getLogger();
 
-    private static final String CLIENT_START_COMMAND = "java -jar ../HW_16-frontend/target/frontend.jar";
+    private static final String CLIENT_FRONTEND_START_COMMAND = "java -jar ../HW_16-frontend/target/frontend.jar";
+    private static final String CLIENT_DBSERVER_START_COMMAND = "java -jar ../HW_16-dbserver/target/dbserver.jar";
     private static final int CLIENT_START_DELAY_SEC = 5;
 
     public static void main(String[] args) throws Exception {
@@ -28,7 +29,8 @@ public class ServerMain {
 
     private void start() throws Exception {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        startClient(executorService);
+        startClient(executorService, CLIENT_DBSERVER_START_COMMAND);
+        startClient(executorService, CLIENT_FRONTEND_START_COMMAND);
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("ru.otus:type=Server");
@@ -40,12 +42,12 @@ public class ServerMain {
         executorService.shutdown();
     }
 
-    private void startClient(ScheduledExecutorService executorService) {
+    private void startClient(ScheduledExecutorService executorService, String command) {
         executorService.schedule(() -> {
             try {
-                new ProcessRunnerImpl().start(CLIENT_START_COMMAND);
+                new ProcessRunnerImpl().start(command);
             } catch (IOException e) {
-                logger.log(Level.SEVERE, e.getMessage());
+                logger.info(e.getMessage());
             }
         }, CLIENT_START_DELAY_SEC, TimeUnit.SECONDS);
     }
