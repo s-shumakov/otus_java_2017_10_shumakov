@@ -12,6 +12,15 @@ public abstract class Msg {
     private final String from;
     private final String to;
     private final String className;
+    private String param;
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
 
     protected Msg(String from, String to, Class<?> klass) {
         this.from = from;

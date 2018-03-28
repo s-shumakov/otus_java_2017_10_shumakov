@@ -54,8 +54,9 @@ public class MirrorSocketMsgServer implements MirrorSocketMsgServerMBean {
             for (MsgWorker client : clients) {
                 Msg msg = client.pool();
                 while (msg != null) {
-                    logger.info("client: " + client.getName());
+                    logger.info("client: " + client.getName() + " " + client);
                     logger.info("Sent message from: " + msg.getFrom() + ", to: " + msg.getTo() + ", message: " + msg.toString());
+                    msg.setParam("new value");
                     client.send(msg);
                     msg = client.pool();
                 }

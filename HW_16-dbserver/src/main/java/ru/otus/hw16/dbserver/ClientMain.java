@@ -22,16 +22,19 @@ public class ClientMain {
     private static final int PORT = 5050;
     private static final int PAUSE_MS = 5000;
     private static final int MAX_MESSAGES_COUNT = 10;
-
+    private static SocketMsgWorker client;
 
     public static void main(String[] args) throws Exception {
-        new ClientMain().start();
+        start();
+        sendMsg();
     }
 
     @SuppressWarnings("InfiniteLoopStatement")
-    private void start() throws Exception {
-        SocketMsgWorker client = new ClientSocketMsgWorker(HOST, PORT, "Dbserver client");
+    private static void start() throws Exception {
+        client = new ClientSocketMsgWorker(HOST, PORT, "Dbserver client");
         client.init();
+
+        logger.info("Client dbserver start");
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.submit(() -> {
@@ -45,16 +48,22 @@ public class ClientMain {
             }
         });
 
-        int count = 0;
-        while (count < MAX_MESSAGES_COUNT) {
-            Msg msg = new MsgReadUserAnswer(client.getName(), "Frontend client", "User!!!");
-            client.send(msg);
-            logger.info("Message sent: " + msg.toString());
-            Thread.sleep(PAUSE_MS);
-            count++;
-        }
-        client.close();
-        executorService.shutdown();
+//        int count = 0;
+//        while (count < MAX_MESSAGES_COUNT) {
+//            Msg msg = new MsgReadUserAnswer(client.getName(), "Frontend client", "User!!!");
+//            client.send(msg);
+//            logger.info("Message sent: " + msg.toString());
+//            Thread.sleep(PAUSE_MS);
+//            count++;
+//        }
+//        client.close();
+//        executorService.shutdown();
+    }
+
+    public static void sendMsg(){
+        Msg msg = new MsgReadUser(client.getName(), "Frontend client");
+        client.send(msg);
+        logger.info("Message sent from Dbserver: " + msg.toString());
     }
 
 }

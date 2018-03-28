@@ -76,6 +76,7 @@ public class SocketMsgWorker implements MsgWorker {
             while (socket.isConnected()) {
                 Msg msg = output.take(); //blocks
                 String json = new Gson().toJson(msg);
+                logger.info("Message send json: " + json);
                 out.println(json);
                 out.println();//line with json + an empty line
             }
@@ -90,10 +91,11 @@ public class SocketMsgWorker implements MsgWorker {
             String inputLine;
             StringBuilder stringBuilder = new StringBuilder();
             while ((inputLine = in.readLine()) != null) { //blocks
-                logger.info("Message received: " + inputLine);
+//                logger.info("Message received: " + inputLine);
                 stringBuilder.append(inputLine);
                 if (inputLine.isEmpty()) { //empty line is the end of the message
                     String json = stringBuilder.toString();
+                    logger.info("Message received json: " + json);
                     Msg msg = getMsgFromJSON(json);
                     input.add(msg);
                     stringBuilder = new StringBuilder();
